@@ -1,8 +1,0 @@
-apiVersion: metallb.io/v1beta1
-kind: BGPAdvertisement
-metadata:
-  name: local
-  namespace: metallb-system
-spec:
-  ipAddressPools:
-  - shamrock-lan-k

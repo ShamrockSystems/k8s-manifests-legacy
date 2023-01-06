@@ -1,0 +1,40 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: check-merge-conflict
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+  - repo: https://github.com/pycqa/isort
+    rev: 5.8.0
+    hooks:
+      - id: isort
+        name: isort (python)
+  - repo: local
+    hooks:
+      - id: kustomize-inflate
+        name: kustomize-inflate
+        entry: python inflate.py
+        language: system
+        pass_filenames: false
+  - repo: https://github.com/bridgecrewio/checkov.git
+    rev: 2.0.975
+    hooks:
+      - id: checkov
+        args: [-d .]
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.2.0
+    hooks:
+      - id: detect-secrets
+        args:
+          - --exclude-files
+          - \.inflate\.lock\.(?:yaml|yml)|sealedsecret\.(?:json|yaml|yml)|bases\.inflated/.*
+  - repo: https://github.com/pre-commit/pygrep-hooks
+    rev: v1.5.1
+    hooks:
+      - id: python-check-blanket-noqa
+  - repo: https://github.com/python-poetry/poetry
+    rev: 1.3.0
+    hooks:
+      - id: poetry-check
+      - id: poetry-lock

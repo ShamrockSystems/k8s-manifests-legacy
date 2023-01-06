@@ -1,1 +1,7 @@
+.idea
+
+charts/
+
 secret.yml
+secret.yaml
+secret.json

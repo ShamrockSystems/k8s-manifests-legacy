@@ -1,1 +1,0 @@
-Istio is installed via the recommended `istioctl` command-line tool. There are currently no plans to add deployment manifests for Istio here.

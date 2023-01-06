@@ -1,0 +1,39 @@
+_bases_dir: bases
+_inflated_dir: bases.inflated
+_version: v0.1.0
+bases:
+- build_datetime_utc: '2023-01-06T03:35:51.123667'
+  hash: a7fca2c77218ec53ebb892b5b4f5bddf30e2f8b73a8af11f1f5030a5e6e13d65
+  hash_type: sha256
+  name: harbor
+  path: harbor
+- build_datetime_utc: '2023-01-06T03:31:37.286364'
+  hash: fa88958584ab7b442a23e28fac0c29cbf5e8518aa6a02d3f4d8ff9769f76b610
+  hash_type: sha256
+  name: istio
+  path: istio
+- build_datetime_utc: '2023-01-06T03:28:54.021728'
+  hash: 97113bbf73bb88b34093a943d8388225181d5e33eca12bd0b5767f202cd83d25
+  hash_type: sha256
+  name: sealed-secrets
+  path: sealed-secrets
+- build_datetime_utc: '2023-01-06T03:28:54.021728'
+  hash: f52ba4dc7fdfb3af960f3b8f6500dc4e435901cf2d3edcea99a2037a6a48a3b1
+  hash_type: sha256
+  name: kubernetes-dashboard
+  path: kubernetes-dashboard
+- build_datetime_utc: '2023-01-06T03:28:54.021728'
+  hash: 1b3233ef7c7bce790f1a1bb311a552a4630cd6e6c41d40c052d6cd832a5528b9
+  hash_type: sha256
+  name: cert-manager
+  path: cert-manager
+- build_datetime_utc: '2023-01-06T03:28:54.021728'
+  hash: 5527280e81e7ef71b444e647b66cbe672dff22d545820248b61ffe2b8491ce99
+  hash_type: sha256
+  name: metallb
+  path: metallb
+- build_datetime_utc: '2023-01-06T03:28:54.021728'
+  hash: 781b08438cf15f2d45df9e910f38d21c6b51721bbdd05cfa87e1e0a853292bf4
+  hash_type: sha256
+  name: argo-cd
+  path: argo-cd

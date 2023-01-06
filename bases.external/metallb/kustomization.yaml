@@ -3,6 +3,4 @@ kind: Kustomization
 
 namespace: metallb-system
 resources:
-  - ../../bases/metallb
-  - ./ipaddresspool.yaml
-  - ./bgpadvertisement.yaml
+  - github.com/metallb/metallb/config/native?ref=v0.13.7

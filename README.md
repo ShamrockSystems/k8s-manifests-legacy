@@ -19,7 +19,7 @@ releases are Kustomizations.
 ## Structure
 
 - `bases/` Kustomize base manifests
-- `bases.inflated/` Auto-generated Kustomization builds from `bases/`. Do not edit manually.
+- `bases.external/` Kustomize external manifests, automatically built by `inflate` to `bases/`
 - `releases/` Release Kustomizations
 
 ## Tooling
@@ -40,6 +40,6 @@ Use `poetry shell` to enable the Python virtual environment.
 
 Use `poetry run task pre-commit` to run `pre-commit` at any time, or just wait to `git commit`.
 
-Use `poetry run task inflate` to inflate Kustomizations from the `bases` directory to the `bases.inflated` directory.
+Use `poetry run task inflate` to inflate Kustomizations from the `bases.external/` directory to the `bases/` directory.
 This allows bases that reference external assets to be properly versioned in the repository without dependence on the
 liveness of those sources.

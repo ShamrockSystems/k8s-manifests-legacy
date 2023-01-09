@@ -138,6 +138,8 @@ def main():
 def dir_hash(path: Path, h: HASH) -> HASH:
     assert Path(path).is_dir()
     for p in sorted(Path(path).iterdir(), key=lambda p: str(p).lower()):
+        if p.name == 'charts':
+            continue
         h.update(p.name.encode())
         if p.is_file():
             with open(p, 'rb') as f:
@@ -177,7 +179,7 @@ def deflate_kustomization(kustomization_path: Path, bases_path: Path, inflation_
 
 def invoke_kustomize(path: Path) -> str:
     result = subprocess.run(
-        ['kubectl', 'kustomize', path.absolute()],
+        ['kubectl', 'kustomize', path.absolute(), '--enable-helm'],
         stdout=subprocess.PIPE, encoding='utf-8',
         text=True, universal_newlines=True)
     if result.returncode != 0:

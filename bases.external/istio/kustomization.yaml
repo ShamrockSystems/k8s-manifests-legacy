@@ -1,0 +1,28 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ./namespace.yaml
+
+helmCharts:
+  - releaseName: istio-base
+    namespace: istio-system
+    name: base
+    repo: https://istio-release.storage.googleapis.com/charts
+    version: 1.16.1
+    valuesFile: values.base.yaml
+    includeCRDs: true
+  - releaseName: istio-istiod
+    namespace: istio-system
+    name: istiod
+    repo: https://istio-release.storage.googleapis.com/charts
+    version: 1.16.1
+    valuesFile: values.istiod.yaml
+    includeCRDs: true
+  - releaseName: istio-gateway
+    namespace: istio-ingress
+    name: gateway
+    repo: https://istio-release.storage.googleapis.com/charts
+    version: 1.16.1
+    valuesFile: values.gateway.yaml
+    includeCRDs: true

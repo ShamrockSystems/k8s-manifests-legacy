@@ -2,33 +2,33 @@ _bases_dir: bases.external
 _inflated_dir: bases
 _version: v0.1.0
 bases:
+- build_datetime_utc: '2023-01-12T17:26:33.720289'
+  hash: 5527280e81e7ef71b444e647b66cbe672dff22d545820248b61ffe2b8491ce99
+  hash_type: sha256
+  name: metallb
+  path: metallb
+- build_datetime_utc: '2023-01-12T17:26:33.720289'
+  hash: 97113bbf73bb88b34093a943d8388225181d5e33eca12bd0b5767f202cd83d25
+  hash_type: sha256
+  name: sealed-secrets
+  path: sealed-secrets
+- build_datetime_utc: '2023-01-12T17:26:33.720289'
+  hash: 1b3233ef7c7bce790f1a1bb311a552a4630cd6e6c41d40c052d6cd832a5528b9
+  hash_type: sha256
+  name: cert-manager
+  path: cert-manager
+- build_datetime_utc: '2023-01-12T17:26:33.720289'
+  hash: f52ba4dc7fdfb3af960f3b8f6500dc4e435901cf2d3edcea99a2037a6a48a3b1
+  hash_type: sha256
+  name: kubernetes-dashboard
+  path: kubernetes-dashboard
+- build_datetime_utc: '2023-01-12T17:26:33.720289'
+  hash: 781b08438cf15f2d45df9e910f38d21c6b51721bbdd05cfa87e1e0a853292bf4
+  hash_type: sha256
+  name: argo-cd
+  path: argo-cd
 - build_datetime_utc: '2023-01-09T03:30:16.649395'
   hash: 92428fec4ed2b55f86f28c700787d67ab794062074596999e200ee7a0fdfa259
   hash_type: sha256
   name: istio
   path: istio
-- build_datetime_utc: '2023-01-09T03:22:43.898825'
-  hash: 07ca35b82841658efa85cd360e8cd4b21b44bde483d30158627e3779ec5ae39a
-  hash_type: sha256
-  name: metallb
-  path: metallb
-- build_datetime_utc: '2023-01-09T03:22:43.898825'
-  hash: 2e78e2845c864e071057d57ccfaf15796f892721ac9127196b559c8de28d28d1
-  hash_type: sha256
-  name: sealed-secrets
-  path: sealed-secrets
-- build_datetime_utc: '2023-01-09T03:22:43.898825'
-  hash: b184c12db717512460e22851a60bf3683ddb912023c9e346a4297d00d7633644
-  hash_type: sha256
-  name: cert-manager
-  path: cert-manager
-- build_datetime_utc: '2023-01-09T03:22:43.898825'
-  hash: 5320809b7fd63e560846c2a7f07c9daed753d36536845765a4ded19fa24c201d
-  hash_type: sha256
-  name: kubernetes-dashboard
-  path: kubernetes-dashboard
-- build_datetime_utc: '2023-01-09T03:22:43.898825'
-  hash: 089393ec9d37626dfe2cce4535db353d18f0f4efb02ec853cf2f8451e47ab2f8
-  hash_type: sha256
-  name: argo-cd
-  path: argo-cd

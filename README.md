@@ -43,3 +43,5 @@ Use `poetry run task pre-commit` to run `pre-commit` at any time, or just wait t
 Use `poetry run task inflate` to inflate Kustomizations from the `bases.external/` directory to the `bases/` directory.
 This allows bases that reference external assets to be properly versioned in the repository without dependence on the
 liveness of those sources.
+
+*`inflate` is currently broken across machines for some reason*

@@ -5,3 +5,12 @@ resources:
   - ../../bases/cert-manager
   - ./sealedsecret.yaml
   - ./clusterissuer.yaml
+
+patches:
+  - target:
+      kind: Deployment
+      name: cert-manager
+    patch: |-
+      - op: add
+        path: /spec/template/spec/containers/0/args/-
+        value: --enable-certificate-owner-ref

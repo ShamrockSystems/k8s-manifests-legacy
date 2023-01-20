@@ -5,3 +5,4 @@ resources:
   - ../../bases/istio
   - ./certificate.yaml
   - ./gateway.yaml
+  - ./peerauthentication.yaml

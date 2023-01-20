@@ -4,3 +4,4 @@ metadata:
   name: httpbin
   labels:
     name: httpbin
+    istio-injection: enabled

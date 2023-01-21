@@ -2,16 +2,16 @@ _bases_dir: bases.external
 _inflated_dir: bases
 _version: v0.1.0
 bases:
+- build_datetime_utc: '2023-01-21T01:13:58.627970'
+  hash: 84375c2b3241afaa219108ed035059bc783fa7b003463163da6e6a71d980ecd4
+  hash_type: sha256
+  name: argo-cd
+  path: argo-cd
 - build_datetime_utc: '2023-01-20T21:16:23.656905'
   hash: cfd46f0c8c23f316452cd1336f3fdec05fc1ec109d76e28194c22809ac213dbe
   hash_type: sha256
   name: istio
   path: istio
-- build_datetime_utc: '2023-01-20T21:16:23.656905'
-  hash: 3de36762047a0cc17fe93ba25e6e04c6de60d135ec91f2eedfe3b5a63fa19ffe
-  hash_type: sha256
-  name: argo-cd
-  path: argo-cd
 - build_datetime_utc: '2023-01-19T21:27:01.883386'
   hash: 4d373426063a559a84ee9812a4dbee09045db9e64fd57ac6b90fe251eca9d1bc
   hash_type: sha256

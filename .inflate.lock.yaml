@@ -2,6 +2,11 @@ _bases_dir: bases.external
 _inflated_dir: bases
 _version: v0.1.0
 bases:
+- build_datetime_utc: '2023-01-21T05:39:44.230500'
+  hash: 8188502dddb1a4a58c934278fdb59b2947fcc6d89be9e782cee42567ef1dbcd1
+  hash_type: sha256
+  name: ceph-csi-rbd
+  path: ceph-csi-rbd
 - build_datetime_utc: '2023-01-21T01:13:58.627970'
   hash: 84375c2b3241afaa219108ed035059bc783fa7b003463163da6e6a71d980ecd4
   hash_type: sha256

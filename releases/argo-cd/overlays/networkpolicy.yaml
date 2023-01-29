@@ -1,0 +1,36 @@
+kind: NetworkPolicy # From: https://github.com/Starslider/argo-cd/blob/%2311086-add-service-mesh-docu/docs/operator-manual/service-mesh-integration.md
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: argocd-redis-network-policy
+  namespace: argocd
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: argocd-redis
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: argocd-server
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: argocd-repo-server
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: argocd-application-controller
+      ports:
+        - protocol: TCP
+          port: 6379
+  egress:
+    - to:
+        - namespaceSelector: { }
+      ports:
+        - port: 53
+          protocol: UDP
+        - port: 53
+          protocol: TCP
+        - port: 15012
+          protocol: TCP

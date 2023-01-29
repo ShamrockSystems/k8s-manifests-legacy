@@ -9,3 +9,4 @@ resources:
 
 patchesStrategicMerge:
   - ./overlays/configmap.yaml
+  - ./overlays/networkpolicy.yaml

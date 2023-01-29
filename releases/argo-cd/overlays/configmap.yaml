@@ -12,6 +12,7 @@ metadata:
   name: argocd-cm
   namespace: argocd
 data:
+  url: https://cd.shamrock.systems
   oidc.config: |
     name: Azure
     issuer: https://login.microsoftonline.com/7380c786-e737-424b-b1ff-fa4e2ff85ef4/v2.0

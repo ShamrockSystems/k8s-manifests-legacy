@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nextcloud
+spec:
+  template:
+    spec:
+      containers:
+      - name: nextcloud
+        env:
+        - name: OBJECTSTORE_S3_BUCKET
+          value: 'shamrock-nextcloud'
+        - name: OBJECTSTORE_S3_SSL
+          value: 'true'
+        - name: OBJECTSTORE_S3_USEPATH_STYLE
+          value: 'true'
+        - name: OBJECTSTORE_S3_AUTOCREATE
+          value: 'true'
+        - name: OBJECTSTORE_S3_KEY
+          valueFrom:
+            secretKeyRef:
+              key: s3-user-key
+              name: nextcloud-config-secret
+        - name: OBJECTSTORE_S3_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: s3-user-secret
+              name: nextcloud-config-secret
+        - name: OBJECTSTORE_S3_REGION
+          value: 'default'
+        - name: OBJECTSTORE_S3_HOST
+          value: 's3.shamrock.systems'
+        - name: OBJECTSTORE_S3_PORT
+          value: '443'
+        - name: REDIS_HOST
+          value: 'nextcloud-redis-master.nextcloud.svc.cluster.local'
+        - name: REDIS_HOST_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: redis-password
+              name: nextcloud-redis-secret
+      - name: nextcloud-cron
+        env:
+        - name: OBJECTSTORE_S3_BUCKET
+          value: 'shamrock-nextcloud'
+        - name: OBJECTSTORE_S3_SSL
+          value: 'true'
+        - name: OBJECTSTORE_S3_USEPATH_STYLE
+          value: 'true'
+        - name: OBJECTSTORE_S3_AUTOCREATE
+          value: 'true'
+        - name: OBJECTSTORE_S3_KEY
+          valueFrom:
+            secretKeyRef:
+              key: s3-user-key
+              name: nextcloud-config-secret
+        - name: OBJECTSTORE_S3_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: s3-user-secret
+              name: nextcloud-config-secret
+        - name: OBJECTSTORE_S3_REGION
+          value: 'default'
+        - name: OBJECTSTORE_S3_HOST
+          value: 's3.shamrock.systems'
+        - name: OBJECTSTORE_S3_PORT
+          value: '443'
+        - name: REDIS_HOST
+          value: 'nextcloud-redis-master.nextcloud.svc.cluster.local'
+        - name: REDIS_HOST_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: redis-password
+              name: nextcloud-redis-secret

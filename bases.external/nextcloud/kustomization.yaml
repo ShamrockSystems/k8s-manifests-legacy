@@ -1,0 +1,25 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ./namespace.yaml
+
+helmCharts:
+  - releaseName: nextcloud
+    namespace: nextcloud
+    name: nextcloud
+    repo: https://nextcloud.github.io/helm/
+    version: 3.4.5
+    valuesFile: values.nextcloud.yaml
+  - releaseName: nextcloud-postgres
+    namespace: nextcloud
+    name: postgresql
+    repo: https://charts.bitnami.com/bitnami
+    version: 12.1.12
+    valuesFile: values.postgresql.yaml
+  - releaseName: nextcloud-redis
+    namespace: nextcloud
+    name: redis
+    repo: https://charts.bitnami.com/bitnami
+    version: 17.6.0
+    valuesFile: values.redis.yaml

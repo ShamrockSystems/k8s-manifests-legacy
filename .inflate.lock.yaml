@@ -2,6 +2,11 @@ _bases_dir: bases.external
 _inflated_dir: bases
 _version: v0.1.0
 bases:
+- build_datetime_utc: '2023-01-30T22:47:09.214705'
+  hash: 600d588f88828dfbd3de7244cba6cedf1e7b907f07796be77192cc7b80e105ac
+  hash_type: sha256
+  name: nextcloud
+  path: nextcloud
 - build_datetime_utc: '2023-01-30T01:16:13.819632'
   hash: e9c65b252da724a4c551680408f331834baad819a60906279df44ac78d6d3112
   hash_type: sha256

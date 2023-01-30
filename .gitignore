@@ -4,6 +4,6 @@ kustomize-test-build.yaml
 
 charts/
 
-secret.yml
-secret.yaml
-secret.json
+secret*.yml
+secret*.yaml
+secret*.json

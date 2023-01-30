@@ -2,73 +2,66 @@ apiVersion: v1
 kind: Namespace
 metadata:
   labels:
-    name: ceph-csi-rbd
-  name: ceph-csi-rbd
+    name: ceph-csi-cephfs
+  name: ceph-csi-cephfs
 ---
 allowVolumeExpansion: true
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  annotations:
-    storageclass.kubernetes.io/is-default-class: "true"
   labels:
-    app: ceph-csi-rbd
-    chart: ceph-csi-rbd-3.7.2
+    app: ceph-csi-cephfs
+    chart: ceph-csi-cephfs-3.7.2
     heritage: Helm
-    release: ceph-csi-rbd
-  name: csi-rbd-sc
-mountOptions:
-- discard
+    release: ceph-csi-cephfs
+  name: csi-cephfs-sc
 parameters:
   clusterID: 2b7df9eb-01ed-44ed-bc6a-012fa6e68784
-  csi.storage.k8s.io/controller-expand-secret-name: csi-rbd-secret
-  csi.storage.k8s.io/controller-expand-secret-namespace: ceph-csi-rbd
-  csi.storage.k8s.io/fstype: ext4
-  csi.storage.k8s.io/node-stage-secret-name: csi-rbd-secret
-  csi.storage.k8s.io/node-stage-secret-namespace: ceph-csi-rbd
-  csi.storage.k8s.io/provisioner-secret-name: csi-rbd-secret
-  csi.storage.k8s.io/provisioner-secret-namespace: ceph-csi-rbd
-  encrypted: "true"
-  imageFeatures: layering
-  pool: rbd_kube
-provisioner: rbd.csi.ceph.com
+  csi.storage.k8s.io/controller-expand-secret-name: csi-cephfs-secret
+  csi.storage.k8s.io/controller-expand-secret-namespace: ceph-csi-cephfs
+  csi.storage.k8s.io/node-stage-secret-name: csi-cephfs-secret
+  csi.storage.k8s.io/node-stage-secret-namespace: ceph-csi-cephfs
+  csi.storage.k8s.io/provisioner-secret-name: csi-cephfs-secret
+  csi.storage.k8s.io/provisioner-secret-namespace: ceph-csi-cephfs
+  fsName: cephfs
+provisioner: cephfs.csi.ceph.com
 reclaimPolicy: Delete
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   labels:
-    app: ceph-csi-rbd
-    chart: ceph-csi-rbd-3.7.2
+    app: ceph-csi-cephfs
+    chart: ceph-csi-cephfs-3.7.2
     component: nodeplugin
     heritage: Helm
-    release: ceph-csi-rbd
-  name: ceph-csi-rbd-nodeplugin
-  namespace: ceph-csi-rbd
+    release: ceph-csi-cephfs
+  name: ceph-csi-cephfs-nodeplugin
+  namespace: ceph-csi-cephfs
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   labels:
-    app: ceph-csi-rbd
-    chart: ceph-csi-rbd-3.7.2
+    app: ceph-csi-cephfs
+    chart: ceph-csi-cephfs-3.7.2
     component: provisioner
     heritage: Helm
-    release: ceph-csi-rbd
-  name: ceph-csi-rbd-provisioner
-  namespace: ceph-csi-rbd
+    release: ceph-csi-cephfs
+  name: ceph-csi-cephfs-provisioner
+  namespace: ceph-csi-cephfs
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   labels:
-    app: ceph-csi-rbd
-    chart: ceph-csi-rbd-3.7.2
+    app: ceph-csi-cephfs
+    chart: ceph-csi-cephfs-3.7.2
     component: provisioner
     heritage: Helm
-    release: ceph-csi-rbd
-  name: ceph-csi-rbd-provisioner
-  namespace: ceph-csi-rbd
+    release: ceph-csi-cephfs
+  name: ceph-csi-cephfs-provisioner
+  namespace: ceph-csi-cephfs
 rules:
 - apiGroups:
   - ""
@@ -79,7 +72,6 @@ rules:
   - list
   - watch
   - create
-  - update
   - delete
 - apiGroups:
   - coordination.k8s.io
@@ -97,61 +89,12 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   labels:
-    app: ceph-csi-rbd
-    chart: ceph-csi-rbd-3.7.2
-    component: nodeplugin
-    heritage: Helm
-    release: ceph-csi-rbd
-  name: ceph-csi-rbd-nodeplugin
-rules:
-- apiGroups:
-  - ""
-  resources:
-  - secrets
-  verbs:
-  - get
-- apiGroups:
-  - ""
-  resources:
-  - configmaps
-  verbs:
-  - get
-- apiGroups:
-  - ""
-  resources:
-  - serviceaccounts
-  verbs:
-  - get
-- apiGroups:
-  - ""
-  resources:
-  - persistentvolumes
-  verbs:
-  - get
-- apiGroups:
-  - storage.k8s.io
-  resources:
-  - volumeattachments
-  verbs:
-  - list
-  - get
-- apiGroups:
-  - ""
-  resources:
-  - serviceaccounts/token
-  verbs:
-  - create
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  labels:
-    app: ceph-csi-rbd
-    chart: ceph-csi-rbd-3.7.2
+    app: ceph-csi-cephfs
+    chart: ceph-csi-cephfs-3.7.2
     component: provisioner
     heritage: Helm
-    release: ceph-csi-rbd
-  name: ceph-csi-rbd-provisioner
+    release: ceph-csi-cephfs
+  name: ceph-csi-cephfs-provisioner
 rules:
 - apiGroups:
   - ""
@@ -160,7 +103,6 @@ rules:
   verbs:
   - get
   - list
-  - watch
 - apiGroups:
   - ""
   resources:
@@ -201,30 +143,6 @@ rules:
   - update
   - patch
 - apiGroups:
-  - ""
-  resources:
-  - endpoints
-  verbs:
-  - get
-  - create
-  - update
-- apiGroups:
-  - storage.k8s.io
-  resources:
-  - volumeattachments
-  verbs:
-  - get
-  - list
-  - watch
-  - update
-  - patch
-- apiGroups:
-  - storage.k8s.io
-  resources:
-  - volumeattachments/status
-  verbs:
-  - patch
-- apiGroups:
   - snapshot.storage.k8s.io
   resources:
   - volumesnapshots
@@ -237,8 +155,7 @@ rules:
   resources:
   - volumesnapshots/status
   verbs:
-  - get
-  - list
+  - update
   - patch
 - apiGroups:
   - snapshot.storage.k8s.io
@@ -270,86 +187,49 @@ rules:
 - apiGroups:
   - ""
   resources:
-  - configmaps
-  verbs:
-  - get
-- apiGroups:
-  - ""
-  resources:
-  - serviceaccounts
-  verbs:
-  - get
-- apiGroups:
-  - ""
-  resources:
   - persistentvolumeclaims/status
   verbs:
   - update
   - patch
-- apiGroups:
-  - ""
-  resources:
-  - serviceaccounts/token
-  verbs:
-  - create
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   labels:
-    app: ceph-csi-rbd
-    chart: ceph-csi-rbd-3.7.2
+    app: ceph-csi-cephfs
+    chart: ceph-csi-cephfs-3.7.2
     component: provisioner
     heritage: Helm
-    release: ceph-csi-rbd
-  name: ceph-csi-rbd-provisioner
-  namespace: ceph-csi-rbd
+    release: ceph-csi-cephfs
+  name: ceph-csi-cephfs-provisioner
+  namespace: ceph-csi-cephfs
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: ceph-csi-rbd-provisioner
+  name: ceph-csi-cephfs-provisioner
 subjects:
 - kind: ServiceAccount
-  name: ceph-csi-rbd-provisioner
-  namespace: ceph-csi-rbd
+  name: ceph-csi-cephfs-provisioner
+  namespace: ceph-csi-cephfs
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   labels:
-    app: ceph-csi-rbd
-    chart: ceph-csi-rbd-3.7.2
-    component: nodeplugin
-    heritage: Helm
-    release: ceph-csi-rbd
-  name: ceph-csi-rbd-nodeplugin
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: ceph-csi-rbd-nodeplugin
-subjects:
-- kind: ServiceAccount
-  name: ceph-csi-rbd-nodeplugin
-  namespace: ceph-csi-rbd
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  labels:
-    app: ceph-csi-rbd
-    chart: ceph-csi-rbd-3.7.2
+    app: ceph-csi-cephfs
+    chart: ceph-csi-cephfs-3.7.2
     component: provisioner
     heritage: Helm
-    release: ceph-csi-rbd
-  name: ceph-csi-rbd-provisioner
+    release: ceph-csi-cephfs
+  name: ceph-csi-cephfs-provisioner
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: ceph-csi-rbd-provisioner
+  name: ceph-csi-cephfs-provisioner
 subjects:
 - kind: ServiceAccount
-  name: ceph-csi-rbd-provisioner
-  namespace: ceph-csi-rbd
+  name: ceph-csi-cephfs-provisioner
+  namespace: ceph-csi-cephfs
 ---
 apiVersion: v1
 data:
@@ -358,109 +238,102 @@ data:
       auth_cluster_required = cephx
       auth_service_required = cephx
       auth_client_required = cephx
+
+      # Workaround for http://tracker.ceph.com/issues/23446
+      fuse_set_user_groups = false
+
+      # ceph-fuse which uses libfuse2 by default has write buffer size of 2KiB
+      # adding 'fuse_big_writes = true' option by default to override this limit
+      # see https://github.com/ceph/ceph-csi/issues/1928
+      fuse_big_writes = true
   keyring: ""
 kind: ConfigMap
 metadata:
   labels:
-    app: ceph-csi-rbd
-    chart: ceph-csi-rbd-3.7.2
+    app: ceph-csi-cephfs
+    chart: ceph-csi-cephfs-3.7.2
     component: nodeplugin
     heritage: Helm
-    release: ceph-csi-rbd
+    release: ceph-csi-cephfs
   name: ceph-config
-  namespace: ceph-csi-rbd
+  namespace: ceph-csi-cephfs
 ---
 apiVersion: v1
 data:
-  cluster-mapping.json: '[]'
   config.json: '[{"clusterID":"2b7df9eb-01ed-44ed-bc6a-012fa6e68784","monitors":["10.83.67.10:6789","10.83.67.11:6789","10.83.67.12:6789"]}]'
 kind: ConfigMap
 metadata:
   labels:
-    app: ceph-csi-rbd
-    chart: ceph-csi-rbd-3.7.2
-    component: nodeplugin
+    app: ceph-csi-cephfs
+    chart: ceph-csi-cephfs-3.7.2
+    component: provisioner
     heritage: Helm
-    release: ceph-csi-rbd
+    release: ceph-csi-cephfs
   name: ceph-csi-config
-  namespace: ceph-csi-rbd
----
-apiVersion: v1
-data:
-  config.json: '{}'
-kind: ConfigMap
-metadata:
-  labels:
-    app: ceph-csi-rbd
-    chart: ceph-csi-rbd-3.7.2
-    component: nodeplugin
-    heritage: Helm
-    release: ceph-csi-rbd
-  name: ceph-csi-encryption-kms-config
-  namespace: ceph-csi-rbd
+  namespace: ceph-csi-cephfs
 ---
 apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: ceph-csi-rbd
-    chart: ceph-csi-rbd-3.7.2
+    app: ceph-csi-cephfs
+    chart: ceph-csi-cephfs-3.7.2
     component: nodeplugin
     heritage: Helm
-    release: ceph-csi-rbd
-  name: ceph-csi-rbd-nodeplugin-http-metrics
-  namespace: ceph-csi-rbd
+    release: ceph-csi-cephfs
+  name: ceph-csi-cephfs-nodeplugin-http-metrics
+  namespace: ceph-csi-cephfs
 spec:
   ports:
   - name: http-metrics
     port: 8080
-    targetPort: 8080
+    targetPort: 8081
   selector:
-    app: ceph-csi-rbd
+    app: ceph-csi-cephfs
     component: nodeplugin
-    release: ceph-csi-rbd
+    release: ceph-csi-cephfs
   type: ClusterIP
 ---
 apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: ceph-csi-rbd
-    chart: ceph-csi-rbd-3.7.2
+    app: ceph-csi-cephfs
+    chart: ceph-csi-cephfs-3.7.2
     component: provisioner
     heritage: Helm
-    release: ceph-csi-rbd
-  name: ceph-csi-rbd-provisioner-http-metrics
-  namespace: ceph-csi-rbd
+    release: ceph-csi-cephfs
+  name: ceph-csi-cephfs-provisioner-http-metrics
+  namespace: ceph-csi-cephfs
 spec:
   ports:
   - name: http-metrics
     port: 8080
-    targetPort: 8080
+    targetPort: 8081
   selector:
-    app: ceph-csi-rbd
+    app: ceph-csi-cephfs
     component: provisioner
-    release: ceph-csi-rbd
+    release: ceph-csi-cephfs
   type: ClusterIP
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: ceph-csi-rbd
-    chart: ceph-csi-rbd-3.7.2
+    app: ceph-csi-cephfs
+    chart: ceph-csi-cephfs-3.7.2
     component: provisioner
     heritage: Helm
-    release: ceph-csi-rbd
-  name: ceph-csi-rbd-provisioner
-  namespace: ceph-csi-rbd
+    release: ceph-csi-cephfs
+  name: ceph-csi-cephfs-provisioner
+  namespace: ceph-csi-cephfs
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: ceph-csi-rbd
+      app: ceph-csi-cephfs
       component: provisioner
-      release: ceph-csi-rbd
+      release: ceph-csi-cephfs
   strategy:
     rollingUpdate:
       maxUnavailable: 50%
@@ -468,11 +341,11 @@ spec:
   template:
     metadata:
       labels:
-        app: ceph-csi-rbd
-        chart: ceph-csi-rbd-3.7.2
+        app: ceph-csi-cephfs
+        chart: ceph-csi-cephfs-3.7.2
         component: provisioner
         heritage: Helm
-        release: ceph-csi-rbd
+        release: ceph-csi-cephfs
     spec:
       affinity:
         podAntiAffinity:
@@ -482,7 +355,7 @@ spec:
               - key: app
                 operator: In
                 values:
-                - ceph-csi-rbd
+                - ceph-csi-cephfs
               - key: component
                 operator: In
                 values:
@@ -495,34 +368,15 @@ spec:
         - --timeout=60s
         - --leader-election=true
         - --retry-interval-start=500ms
-        - --default-fstype=ext4
         - --extra-create-metadata=true
         - --feature-gates=HonorPVReclaimPolicy=true
         - --prevent-volume-mode-conversion=true
         env:
         - name: ADDRESS
           value: unix:///csi/csi-provisioner.sock
-        image: gcr.io/k8s-staging-sig-storage/csi-provisioner:v3.2.1
+        image: registry.k8s.io/sig-storage/csi-provisioner:v3.2.1
         imagePullPolicy: IfNotPresent
         name: csi-provisioner
-        resources: {}
-        volumeMounts:
-        - mountPath: /csi
-          name: socket-dir
-      - args:
-        - --v=1
-        - --csi-address=$(ADDRESS)
-        - --timeout=60s
-        - --leader-election
-        - --retry-interval-start=500ms
-        - --handle-volume-inuse-error=false
-        - --feature-gates=RecoverVolumeExpansionFailure=true
-        env:
-        - name: ADDRESS
-          value: unix:///csi/csi-provisioner.sock
-        image: registry.k8s.io/sig-storage/csi-resizer:v1.5.0
-        imagePullPolicy: IfNotPresent
-        name: csi-resizer
         resources: {}
         volumeMounts:
         - mountPath: /csi
@@ -546,31 +400,29 @@ spec:
       - args:
         - --v=1
         - --csi-address=$(ADDRESS)
-        - --leader-election=true
+        - --timeout=60s
+        - --leader-election
         - --retry-interval-start=500ms
+        - --handle-volume-inuse-error=false
+        - --feature-gates=RecoverVolumeExpansionFailure=true
         env:
         - name: ADDRESS
           value: unix:///csi/csi-provisioner.sock
-        image: registry.k8s.io/sig-storage/csi-attacher:v3.5.0
+        image: registry.k8s.io/sig-storage/csi-resizer:v1.5.0
         imagePullPolicy: IfNotPresent
-        name: csi-attacher
+        name: csi-resizer
         resources: {}
         volumeMounts:
         - mountPath: /csi
           name: socket-dir
       - args:
         - --nodeid=$(NODE_ID)
-        - --type=rbd
+        - --type=cephfs
         - --controllerserver=true
         - --pidlimit=-1
         - --endpoint=$(CSI_ENDPOINT)
-        - --csi-addons-endpoint=$(CSI_ADDONS_ENDPOINT)
         - --v=5
         - --drivername=$(DRIVER_NAME)
-        - --rbdhardmaxclonedepth=8
-        - --rbdsoftmaxclonedepth=4
-        - --maxsnapshotsonimage=450
-        - --minsnapshotsonimage=250
         - --setmetadata=true
         env:
         - name: POD_IP
@@ -578,68 +430,37 @@ spec:
             fieldRef:
               fieldPath: status.podIP
         - name: DRIVER_NAME
-          value: rbd.csi.ceph.com
+          value: cephfs.csi.ceph.com
         - name: NODE_ID
           valueFrom:
             fieldRef:
               fieldPath: spec.nodeName
         - name: CSI_ENDPOINT
           value: unix:///csi/csi-provisioner.sock
-        - name: CSI_ADDONS_ENDPOINT
-          value: unix:///csi/csi-addons.sock
         image: quay.io/cephcsi/cephcsi:v3.7.2
         imagePullPolicy: IfNotPresent
-        name: csi-rbdplugin
+        name: csi-cephfsplugin
         resources: {}
         volumeMounts:
         - mountPath: /csi
           name: socket-dir
-        - mountPath: /dev
-          name: host-dev
         - mountPath: /sys
           name: host-sys
         - mountPath: /lib/modules
           name: lib-modules
           readOnly: true
-        - mountPath: /etc/ceph-csi-config/
-          name: ceph-csi-config
+        - mountPath: /dev
+          name: host-dev
         - mountPath: /etc/ceph/
           name: ceph-config
-        - mountPath: /etc/ceph-csi-encryption-kms-config/
-          name: ceph-csi-encryption-kms-config
-        - mountPath: /tmp/csi/keys
-          name: keys-tmp-dir
-        - mountPath: /run/secrets/tokens
-          name: oidc-token
-          readOnly: true
-      - args:
-        - --type=controller
-        - --v=5
-        - --drivername=$(DRIVER_NAME)
-        - --drivernamespace=$(DRIVER_NAMESPACE)
-        - --setmetadata=true
-        env:
-        - name: DRIVER_NAMESPACE
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.namespace
-        - name: DRIVER_NAME
-          value: rbd.csi.ceph.com
-        image: quay.io/cephcsi/cephcsi:v3.7.2
-        imagePullPolicy: IfNotPresent
-        name: csi-rbdplugin-controller
-        resources: {}
-        volumeMounts:
         - mountPath: /etc/ceph-csi-config/
           name: ceph-csi-config
         - mountPath: /tmp/csi/keys
           name: keys-tmp-dir
-        - mountPath: /etc/ceph/
-          name: ceph-config
       - args:
         - --type=liveness
         - --endpoint=$(CSI_ENDPOINT)
-        - --metricsport=8080
+        - --metricsport=8081
         - --metricspath=/metrics
         - --polltime=60s
         - --timeout=3s
@@ -654,7 +475,7 @@ spec:
         imagePullPolicy: IfNotPresent
         name: liveness-prometheus
         ports:
-        - containerPort: 8080
+        - containerPort: 8081
           name: metrics
           protocol: TCP
         resources: {}
@@ -663,71 +484,61 @@ spec:
           name: socket-dir
       hostNetwork: false
       priorityClassName: system-cluster-critical
-      serviceAccountName: ceph-csi-rbd-provisioner
+      serviceAccountName: ceph-csi-cephfs-provisioner
       volumes:
       - emptyDir:
           medium: Memory
         name: socket-dir
-      - hostPath:
-          path: /dev
-        name: host-dev
       - hostPath:
           path: /sys
         name: host-sys
       - hostPath:
           path: /lib/modules
         name: lib-modules
+      - hostPath:
+          path: /dev
+        name: host-dev
       - configMap:
           name: ceph-config
         name: ceph-config
       - configMap:
           name: ceph-csi-config
         name: ceph-csi-config
-      - configMap:
-          name: ceph-csi-encryption-kms-config
-        name: ceph-csi-encryption-kms-config
       - emptyDir:
           medium: Memory
         name: keys-tmp-dir
-      - name: oidc-token
-        projected:
-          sources:
-          - serviceAccountToken:
-              audience: ceph-csi-kms
-              expirationSeconds: 3600
-              path: oidc-token
 ---
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   labels:
-    app: ceph-csi-rbd
-    chart: ceph-csi-rbd-3.7.2
+    app: ceph-csi-cephfs
+    chart: ceph-csi-cephfs-3.7.2
     component: nodeplugin
     heritage: Helm
-    release: ceph-csi-rbd
-  name: ceph-csi-rbd-nodeplugin
-  namespace: ceph-csi-rbd
+    release: ceph-csi-cephfs
+  name: ceph-csi-cephfs-nodeplugin
+  namespace: ceph-csi-cephfs
 spec:
   selector:
     matchLabels:
-      app: ceph-csi-rbd
+      app: ceph-csi-cephfs
       component: nodeplugin
-      release: ceph-csi-rbd
+      release: ceph-csi-cephfs
   template:
     metadata:
       labels:
-        app: ceph-csi-rbd
-        chart: ceph-csi-rbd-3.7.2
+        app: ceph-csi-cephfs
+        chart: ceph-csi-cephfs-3.7.2
         component: nodeplugin
         heritage: Helm
-        release: ceph-csi-rbd
+        release: ceph-csi-cephfs
     spec:
       containers:
       - args:
         - --v=5
         - --csi-address=/csi/csi.sock
-        - --kubelet-registration-path=/var/lib/kubelet/plugins/rbd.csi.ceph.com/csi.sock
+        - --kubelet-registration-path=/var/lib/kubelet/plugins/cephfs.csi.ceph.com/csi.sock
         env:
         - name: KUBE_NODE_NAME
           valueFrom:
@@ -747,13 +558,12 @@ spec:
           name: registration-dir
       - args:
         - --nodeid=$(NODE_ID)
-        - --pluginpath=/var/lib/kubelet/plugins
-        - --stagingpath=/var/lib/kubelet/plugins/kubernetes.io/csi/
-        - --type=rbd
+        - --type=cephfs
         - --nodeserver=true
         - --pidlimit=-1
+        - --kernelmountoptions=
+        - --fusemountoptions=
         - --endpoint=$(CSI_ENDPOINT)
-        - --csi-addons-endpoint=$(CSI_ADDONS_ENDPOINT)
         - --v=5
         - --drivername=$(DRIVER_NAME)
         env:
@@ -762,18 +572,16 @@ spec:
             fieldRef:
               fieldPath: status.podIP
         - name: DRIVER_NAME
-          value: rbd.csi.ceph.com
+          value: cephfs.csi.ceph.com
         - name: NODE_ID
           valueFrom:
             fieldRef:
               fieldPath: spec.nodeName
         - name: CSI_ENDPOINT
           value: unix:///csi/csi.sock
-        - name: CSI_ADDONS_ENDPOINT
-          value: unix:///csi/csi-addons.sock
         image: quay.io/cephcsi/cephcsi:v3.7.2
         imagePullPolicy: IfNotPresent
-        name: csi-rbdplugin
+        name: csi-cephfsplugin
         resources: {}
         securityContext:
           allowPrivilegeEscalation: true
@@ -784,6 +592,12 @@ spec:
         volumeMounts:
         - mountPath: /csi
           name: socket-dir
+        - mountPath: /var/lib/kubelet/pods
+          mountPropagation: Bidirectional
+          name: mountpoint-dir
+        - mountPath: /var/lib/kubelet/plugins
+          mountPropagation: Bidirectional
+          name: plugin-dir
         - mountPath: /dev
           name: host-dev
         - mountPath: /run/mount
@@ -796,29 +610,18 @@ spec:
         - mountPath: /lib/modules
           name: lib-modules
           readOnly: true
-        - mountPath: /etc/ceph-csi-config/
-          name: ceph-csi-config
         - mountPath: /etc/ceph/
           name: ceph-config
-        - mountPath: /etc/ceph-csi-encryption-kms-config/
-          name: ceph-csi-encryption-kms-config
-        - mountPath: /var/lib/kubelet/plugins
-          mountPropagation: Bidirectional
-          name: plugin-dir
-        - mountPath: /var/lib/kubelet/pods
-          mountPropagation: Bidirectional
-          name: mountpoint-dir
+        - mountPath: /etc/ceph-csi-config/
+          name: ceph-csi-config
         - mountPath: /tmp/csi/keys
           name: keys-tmp-dir
-        - mountPath: /var/log/ceph
-          name: ceph-logdir
-        - mountPath: /run/secrets/tokens
-          name: oidc-token
-          readOnly: true
+        - mountPath: /csi/mountinfo
+          name: ceph-csi-mountinfo
       - args:
         - --type=liveness
         - --endpoint=$(CSI_ENDPOINT)
-        - --metricsport=8080
+        - --metricsport=8081
         - --metricspath=/metrics
         - --polltime=60s
         - --timeout=3s
@@ -833,7 +636,7 @@ spec:
         imagePullPolicy: IfNotPresent
         name: liveness-prometheus
         ports:
-        - containerPort: 8080
+        - containerPort: 8081
           name: metrics
           protocol: TCP
         resources: {}
@@ -847,10 +650,10 @@ spec:
       hostNetwork: true
       hostPID: true
       priorityClassName: system-node-critical
-      serviceAccountName: ceph-csi-rbd-nodeplugin
+      serviceAccountName: ceph-csi-cephfs-nodeplugin
       volumes:
       - hostPath:
-          path: /var/lib/kubelet/plugins/rbd.csi.ceph.com
+          path: /var/lib/kubelet/plugins/cephfs.csi.ceph.com
           type: DirectoryOrCreate
         name: socket-dir
       - hostPath:
@@ -858,23 +661,13 @@ spec:
           type: Directory
         name: registration-dir
       - hostPath:
-          path: /var/lib/kubelet/plugins
-          type: Directory
-        name: plugin-dir
-      - hostPath:
           path: /var/lib/kubelet/pods
           type: DirectoryOrCreate
         name: mountpoint-dir
       - hostPath:
-          path: /var/log/ceph
-          type: DirectoryOrCreate
-        name: ceph-logdir
-      - hostPath:
-          path: /dev
-        name: host-dev
-      - hostPath:
-          path: /run/mount
-        name: host-mount
+          path: /var/lib/kubelet/plugins
+          type: Directory
+        name: plugin-dir
       - hostPath:
           path: /sys
         name: host-sys
@@ -882,35 +675,35 @@ spec:
           path: /etc/selinux
         name: etc-selinux
       - hostPath:
+          path: /run/mount
+        name: host-mount
+      - hostPath:
           path: /lib/modules
         name: lib-modules
+      - hostPath:
+          path: /dev
+        name: host-dev
       - configMap:
           name: ceph-config
         name: ceph-config
       - configMap:
           name: ceph-csi-config
         name: ceph-csi-config
-      - configMap:
-          name: ceph-csi-encryption-kms-config
-        name: ceph-csi-encryption-kms-config
       - emptyDir:
           medium: Memory
         name: keys-tmp-dir
-      - name: oidc-token
-        projected:
-          sources:
-          - serviceAccountToken:
-              audience: ceph-csi-kms
-              expirationSeconds: 3600
-              path: oidc-token
+      - hostPath:
+          path: /var/lib/kubelet/plugins/cephfs.csi.ceph.com/mountinfo
+          type: DirectoryOrCreate
+        name: ceph-csi-mountinfo
   updateStrategy:
     type: OnDelete
 ---
 apiVersion: storage.k8s.io/v1
 kind: CSIDriver
 metadata:
-  name: rbd.csi.ceph.com
+  name: cephfs.csi.ceph.com
 spec:
-  attachRequired: true
+  attachRequired: false
   fsGroupPolicy: File
   podInfoOnMount: false

@@ -6,3 +6,23 @@ resources:
   - ./certificate.yaml
   - ./gateway.yaml
   - ./peerauthentication.yaml
+
+patchesJson6902:
+  - target:
+      version: v1beta1
+      kind: PodDisruptionBudget
+      name: '.*'
+      group: policy
+    patch: |-
+      - op: replace
+        path: "/apiVersion"
+        value: policy/v1
+  - target:
+      version: v2beta2
+      kind: HorizontalPodAutoscaler
+      name: '.*'
+      group: autoscaling
+    patch: |-
+      - op: replace
+        path: "/apiVersion"
+        value: autoscaling/v2

@@ -9,6 +9,15 @@ resources:
 
 patchesJson6902:
   - target:
+      version: v1
+      kind: ValidatingWebhookConfiguration
+      name: istiod-default-validator
+      group: admissionregistration.k8s.io
+    patch: |-
+      - op: replace
+        path: "/webhooks/0/failurePolicy"
+        value: Fail
+  - target: # Remove when generated build.yaml has correct apiVersion
       version: v1beta1
       kind: PodDisruptionBudget
       name: '.*'
@@ -17,7 +26,7 @@ patchesJson6902:
       - op: replace
         path: "/apiVersion"
         value: policy/v1
-  - target:
+  - target: # Remove when generated build.yaml has correct apiVersion
       version: v2beta2
       kind: HorizontalPodAutoscaler
       name: '.*'

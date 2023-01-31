@@ -2,16 +2,21 @@ _bases_dir: bases.external
 _inflated_dir: bases
 _version: v0.1.0
 bases:
+- build_datetime_utc: '2023-01-31T06:33:45.446285'
+  hash: 9c8eb613b06f60f5e86e8ccdca27856fb481a5e5ddcf0a2581a3a59113bcea42
+  hash_type: sha256
+  name: nextcloud
+  path: nextcloud
+- build_datetime_utc: '2023-01-31T06:19:10.480510'
+  hash: 759e5b8b640422422efc72e58ec643e71cd4e9aba9fbb281a3ef47eee73d5ba6
+  hash_type: sha256
+  name: onlyoffice
+  path: onlyoffice
 - build_datetime_utc: '2023-01-31T03:18:52.748225'
   hash: 611304a77c3a9fc7631d7f85e075022e1b25b365c04a36dd3ac73ea6b7a6d484
   hash_type: sha256
   name: crd
   path: crd
-- build_datetime_utc: '2023-01-31T00:32:17.298336'
-  hash: 2c59d18562e7dfa5dc4f6ac79f56498f77f0d972fc05b0660c4a536f20bbf8c1
-  hash_type: sha256
-  name: nextcloud
-  path: nextcloud
 - build_datetime_utc: '2023-01-30T01:16:13.819632'
   hash: e9c65b252da724a4c551680408f331834baad819a60906279df44ac78d6d3112
   hash_type: sha256

@@ -440,10 +440,10 @@ resources:
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
   limits:
-    cpu: 2000m
+    cpu: 4000m
     memory: 8192Mi
   requests:
-    cpu: 2000m
+    cpu: 4000m
     memory: 8192Mi
 
 ## Liveness and readiness probe values

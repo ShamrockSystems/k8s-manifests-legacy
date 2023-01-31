@@ -584,10 +584,10 @@ spec:
           protocol: TCP
         resources:
           limits:
-            cpu: 2000m
+            cpu: 4000m
             memory: 8192Mi
           requests:
-            cpu: 2000m
+            cpu: 4000m
             memory: 8192Mi
         volumeMounts:
         - mountPath: /var/www/
@@ -676,10 +676,10 @@ spec:
         name: nextcloud-cron
         resources:
           limits:
-            cpu: 2000m
+            cpu: 4000m
             memory: 8192Mi
           requests:
-            cpu: 2000m
+            cpu: 4000m
             memory: 8192Mi
         volumeMounts:
         - mountPath: /var/www/

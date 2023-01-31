@@ -5,6 +5,10 @@ metadata:
 spec:
   template:
     spec:
+      hostAliases:
+        - ip: "10.76.30.25"
+          hostnames:
+            - "s3.shamrock.systems"
       containers:
       - name: nextcloud
         env:

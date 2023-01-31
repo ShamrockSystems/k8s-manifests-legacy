@@ -2,6 +2,11 @@ _bases_dir: bases.external
 _inflated_dir: bases
 _version: v0.1.0
 bases:
+- build_datetime_utc: '2023-01-31T03:18:52.748225'
+  hash: 611304a77c3a9fc7631d7f85e075022e1b25b365c04a36dd3ac73ea6b7a6d484
+  hash_type: sha256
+  name: crd
+  path: crd
 - build_datetime_utc: '2023-01-31T00:32:17.298336'
   hash: 2c59d18562e7dfa5dc4f6ac79f56498f77f0d972fc05b0660c4a536f20bbf8c1
   hash_type: sha256
@@ -27,11 +32,6 @@ bases:
   hash_type: sha256
   name: istio
   path: istio
-- build_datetime_utc: '2023-01-19T21:27:01.883386'
-  hash: 4d373426063a559a84ee9812a4dbee09045db9e64fd57ac6b90fe251eca9d1bc
-  hash_type: sha256
-  name: crd
-  path: crd
 - build_datetime_utc: '2023-01-13T20:52:32.412509'
   hash: 2648964aa588ec43f958d2d23ae20ecfcff329b1eb8bf5d21695805f3045f137
   hash_type: sha256

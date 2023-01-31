@@ -296,6 +296,37 @@ data:
         ),
       );
     }
+  reverse-proxy.config.php: |-
+    <?php
+    $overwriteHost = getenv('OVERWRITEHOST');
+    if ($overwriteHost) {
+      $CONFIG['overwritehost'] = $overwriteHost;
+    }
+
+    $overwriteProtocol = getenv('OVERWRITEPROTOCOL');
+    if ($overwriteProtocol) {
+      $CONFIG['overwriteprotocol'] = $overwriteProtocol;
+    }
+
+    $overwriteCliUrl = getenv('OVERWRITECLIURL');
+    if ($overwriteCliUrl) {
+      $CONFIG['overwrite.cli.url'] = $overwriteCliUrl;
+    }
+
+    $overwriteWebRoot = getenv('OVERWRITEWEBROOT');
+    if ($overwriteWebRoot) {
+      $CONFIG['overwritewebroot'] = $overwriteWebRoot;
+    }
+
+    $overwriteCondAddr = getenv('OVERWRITECONDADDR');
+    if ($overwriteCondAddr) {
+      $CONFIG['overwritecondaddr'] = $overwriteCondAddr;
+    }
+
+    $trustedProxies = getenv('TRUSTED_PROXIES');
+    if ($trustedProxies) {
+      $CONFIG['trusted_proxies'] = array_filter(array_map('trim', explode(' ', $trustedProxies)));
+    }
   s3.config.php: |-
     <?php
     if (getenv('OBJECTSTORE_S3_BUCKET')) {
@@ -505,7 +536,7 @@ spec:
   template:
     metadata:
       annotations:
-        nextcloud-config-hash: 3a839653f5380eed192b5b88c22ba77c842d76896cb1cd15dcbda131a6186679
+        nextcloud-config-hash: db3732caaf36cc250b735642a44de081b419a9977254cf9f4179aecda8a1e79b
         php-config-hash: 44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a
       labels:
         app.kubernetes.io/component: app
@@ -514,6 +545,8 @@ spec:
     spec:
       containers:
       - env:
+        - name: OVERWRITEPROTOCOL
+          value: https
         - name: POSTGRES_HOST
           value: nextcloud-postgres-postgresql.nextcloud.svc.cluster.local
         - name: POSTGRES_DB
@@ -578,6 +611,9 @@ spec:
         - mountPath: /var/www/html/themes
           name: nextcloud-main
           subPath: themes
+        - mountPath: /var/www/html/config/reverse-proxy.config.php
+          name: nextcloud-config
+          subPath: reverse-proxy.config.php
         - mountPath: /var/www/html/config/s3.config.php
           name: nextcloud-config
           subPath: s3.config.php
@@ -605,6 +641,8 @@ spec:
       - command:
         - /cron.sh
         env:
+        - name: OVERWRITEPROTOCOL
+          value: https
         - name: POSTGRES_HOST
           value: nextcloud-postgres-postgresql.nextcloud.svc.cluster.local
         - name: POSTGRES_DB
@@ -665,6 +703,9 @@ spec:
         - mountPath: /var/www/html/themes
           name: nextcloud-main
           subPath: themes
+        - mountPath: /var/www/html/config/reverse-proxy.config.php
+          name: nextcloud-config
+          subPath: reverse-proxy.config.php
         - mountPath: /var/www/html/config/s3.config.php
           name: nextcloud-config
           subPath: s3.config.php

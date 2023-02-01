@@ -102,7 +102,16 @@ nextcloud:
       password: pass
   # PHP Configuration files
   # Will be injected in /usr/local/etc/php/conf.d for apache image and in /usr/local/etc/php-fpm.d when nginx.enabled: true
-  phpConfigs: { }
+  phpConfigs:
+    x-redis.ini: |-
+      redis.session.locking_enabled=1
+      redis.session.lock_retries=-1
+      redis.session.lock_wait_time=10000
+    x-upload.ini: |-
+      upload_max_filesize=96M
+      post_max_size=96M
+    x-memory.ini: |-
+      memory_limit=1024M
   # Default config files
   # IMPORTANT: Will be used only if you put extra configs, otherwise default will come from nextcloud itself
   # Default confgurations can be found here: https://github.com/nextcloud/docker/tree/master/16.0/apache/config
@@ -440,11 +449,11 @@ resources:
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
   limits:
-    cpu: 4000m
+    cpu: 6000m
     memory: 8192Mi
   requests:
-    cpu: 4000m
-    memory: 8192Mi
+    cpu: 1000m
+    memory: 2048Mi
 
 ## Liveness and readiness probe values
 ## Ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes

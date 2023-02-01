@@ -381,6 +381,25 @@ metadata:
   name: nextcloud-config
 ---
 apiVersion: v1
+data:
+  x-memory.ini: memory_limit=1024M
+  x-redis.ini: |-
+    redis.session.locking_enabled=1
+    redis.session.lock_retries=-1
+    redis.session.lock_wait_time=10000
+  x-upload.ini: |-
+    upload_max_filesize=96M
+    post_max_size=96M
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/instance: nextcloud
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: nextcloud
+    helm.sh/chart: nextcloud-3.4.5
+  name: nextcloud-phpconfig
+---
+apiVersion: v1
 kind: Service
 metadata:
   labels:
@@ -537,7 +556,7 @@ spec:
     metadata:
       annotations:
         nextcloud-config-hash: db3732caaf36cc250b735642a44de081b419a9977254cf9f4179aecda8a1e79b
-        php-config-hash: 44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a
+        php-config-hash: ed6e7a748d32ae48057eb6fb256f7a8e76756f106fde2ca6ed689b1202937c8e
       labels:
         app.kubernetes.io/component: app
         app.kubernetes.io/instance: nextcloud
@@ -584,11 +603,11 @@ spec:
           protocol: TCP
         resources:
           limits:
-            cpu: 4000m
+            cpu: 6000m
             memory: 8192Mi
           requests:
-            cpu: 4000m
-            memory: 8192Mi
+            cpu: 1000m
+            memory: 2048Mi
         volumeMounts:
         - mountPath: /var/www/
           name: nextcloud-main
@@ -638,6 +657,15 @@ spec:
         - mountPath: /var/www/html/config/smtp.config.php
           name: nextcloud-config
           subPath: smtp.config.php
+        - mountPath: /usr/local/etc/php/conf.d/x-memory.ini
+          name: nextcloud-phpconfig
+          subPath: x-memory.ini
+        - mountPath: /usr/local/etc/php/conf.d/x-redis.ini
+          name: nextcloud-phpconfig
+          subPath: x-redis.ini
+        - mountPath: /usr/local/etc/php/conf.d/x-upload.ini
+          name: nextcloud-phpconfig
+          subPath: x-upload.ini
       - command:
         - /cron.sh
         env:
@@ -676,11 +704,11 @@ spec:
         name: nextcloud-cron
         resources:
           limits:
-            cpu: 4000m
+            cpu: 6000m
             memory: 8192Mi
           requests:
-            cpu: 4000m
-            memory: 8192Mi
+            cpu: 1000m
+            memory: 2048Mi
         volumeMounts:
         - mountPath: /var/www/
           name: nextcloud-main
@@ -730,6 +758,15 @@ spec:
         - mountPath: /var/www/html/config/smtp.config.php
           name: nextcloud-config
           subPath: smtp.config.php
+        - mountPath: /usr/local/etc/php/conf.d/x-memory.ini
+          name: nextcloud-phpconfig
+          subPath: x-memory.ini
+        - mountPath: /usr/local/etc/php/conf.d/x-redis.ini
+          name: nextcloud-phpconfig
+          subPath: x-redis.ini
+        - mountPath: /usr/local/etc/php/conf.d/x-upload.ini
+          name: nextcloud-phpconfig
+          subPath: x-upload.ini
       securityContext:
         fsGroup: 33
       serviceAccountName: nextcloud-serviceaccount
@@ -740,6 +777,9 @@ spec:
       - configMap:
           name: nextcloud-config
         name: nextcloud-config
+      - configMap:
+          name: nextcloud-phpconfig
+        name: nextcloud-phpconfig
 ---
 apiVersion: apps/v1
 kind: StatefulSet

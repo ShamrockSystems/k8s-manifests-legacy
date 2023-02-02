@@ -2,6 +2,11 @@ _bases_dir: bases.external
 _inflated_dir: bases
 _version: v0.1.0
 bases:
+- build_datetime_utc: '2023-02-02T07:57:48.546252'
+  hash: e723314428b9b8a51f34083d05a4965fdc81aef39ea46819d1db87e0fc506fb8
+  hash_type: sha256
+  name: prometheus
+  path: prometheus
 - build_datetime_utc: '2023-02-02T06:05:16.827607'
   hash: 1147765b4fcbdd45810d8b7640ea3396052f0e630b6eea237dca7bde584a7925
   hash_type: sha256

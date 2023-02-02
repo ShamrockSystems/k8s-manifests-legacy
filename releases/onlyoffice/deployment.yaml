@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: documentserver
+  name: documentserver
+  namespace: onlyoffice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: documentserver
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: documentserver
+    spec:
+      containers:
+      - name: documentserver
+        image: onlyoffice/documentserver:7.3.0
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            cpu: 2000m
+            memory: 4096Mi
+          requests:
+            cpu: 1000m
+            memory: 1024Mi
+        env:
+        - name: DB_PWD
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: docs-postgres-secret
+        - name: AMQP_PWD
+          valueFrom:
+            secretKeyRef:
+              key: rabbitmq-password
+              name: docs-rabbitmq-secret
+        - name: REDIS_SERVER_PWD
+          valueFrom:
+            secretKeyRef:
+              key: redis-password
+              name: docs-redis-secret
+        envFrom:
+        - secretRef:
+            name: docs-jwt-secret
+        - configMapRef:
+            name: documentserver
+        volumeMounts:
+        - mountPath: /var/lib/onlyoffice/documentserver/App_Data/cache/files
+          name: ds-files
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /index.html
+            port: 80
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 3
+        readinessProbe:
+          failureThreshold: 2
+          httpGet:
+            path: /index.html
+            port: 80
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 3
+        startupProbe:
+          failureThreshold: 30
+          httpGet:
+            path: /index.html
+            port: 80
+          periodSeconds: 10
+      volumes:
+      - name: ds-files
+        persistentVolumeClaim:
+          claimName: ds-files

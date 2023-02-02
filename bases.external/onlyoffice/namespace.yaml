@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: onlyoffice
+  labels:
+    name: onlyoffice
+    istio-injection: enabled

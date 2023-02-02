@@ -1,0 +1,17 @@
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: HTTPRoute
+metadata:
+  name: http
+spec:
+  parentRefs:
+  - name: gateway
+    namespace: istio-ingress
+  hostnames: ["docs.shamrock.systems"]
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    backendRefs:
+    - name: documentserver
+      port: 80

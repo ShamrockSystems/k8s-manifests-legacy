@@ -2,8 +2,8 @@ _bases_dir: bases.external
 _inflated_dir: bases
 _version: v0.1.0
 bases:
-- build_datetime_utc: '2023-02-02T16:55:33.963412'
-  hash: 00eae3c5a20d8e9c1570d7cf7e7533feb67be4732e682df9da4d02e3db47ed68
+- build_datetime_utc: '2023-02-02T17:09:22.559592'
+  hash: a5a2a0e802529828bd697873e916e76bf1e466019e8e75e3014dfb7090b51cc5
   hash_type: sha256
   name: crd
   path: crd

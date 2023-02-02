@@ -2,6 +2,11 @@ _bases_dir: bases.external
 _inflated_dir: bases
 _version: v0.1.0
 bases:
+- build_datetime_utc: '2023-02-02T06:05:16.827607'
+  hash: 1147765b4fcbdd45810d8b7640ea3396052f0e630b6eea237dca7bde584a7925
+  hash_type: sha256
+  name: kiali
+  path: kiali
 - build_datetime_utc: '2023-02-02T04:40:52.921604'
   hash: c4fe570e2ef41311c727270779a0efd20466345706aebda3109c258709ace181
   hash_type: sha256

@@ -28,7 +28,7 @@ repos:
       - id: detect-secrets
         args:
           - --exclude-files
-          - \.inflate\.lock\.(?:yaml|yml)|certificate\.(?:yaml|yml)|sealedsecret\..*(?:json|yaml|yml)|build\.(?:yaml|yml)|values\..*\.(?:yaml|yml)
+          - \.inflate\.lock\.(?:yaml|yml)|certificate\.(?:yaml|yml)|sealedsecret\..*(?:json|yaml|yml)|build\.(?:yaml|yml)|values\..*(?:yaml|yml)
   - repo: https://github.com/pre-commit/pygrep-hooks
     rev: v1.5.1
     hooks:

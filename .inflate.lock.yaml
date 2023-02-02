@@ -2,8 +2,13 @@ _bases_dir: bases.external
 _inflated_dir: bases
 _version: v0.1.0
 bases:
-- build_datetime_utc: '2023-02-02T07:57:48.546252'
-  hash: e723314428b9b8a51f34083d05a4965fdc81aef39ea46819d1db87e0fc506fb8
+- build_datetime_utc: '2023-02-02T16:55:33.963412'
+  hash: 00eae3c5a20d8e9c1570d7cf7e7533feb67be4732e682df9da4d02e3db47ed68
+  hash_type: sha256
+  name: crd
+  path: crd
+- build_datetime_utc: '2023-02-02T16:53:54.638275'
+  hash: 87c5d5963a8e4dd3b0a0bc2f87f691be65b3fa96452be2c88c607b6d9593e0e6
   hash_type: sha256
   name: prometheus
   path: prometheus
@@ -22,11 +27,6 @@ bases:
   hash_type: sha256
   name: nextcloud
   path: nextcloud
-- build_datetime_utc: '2023-01-31T03:18:52.748225'
-  hash: 611304a77c3a9fc7631d7f85e075022e1b25b365c04a36dd3ac73ea6b7a6d484
-  hash_type: sha256
-  name: crd
-  path: crd
 - build_datetime_utc: '2023-01-30T01:16:13.819632'
   hash: e9c65b252da724a4c551680408f331834baad819a60906279df44ac78d6d3112
   hash_type: sha256

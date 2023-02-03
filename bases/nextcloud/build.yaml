@@ -327,34 +327,6 @@ data:
     if ($trustedProxies) {
       $CONFIG['trusted_proxies'] = array_filter(array_map('trim', explode(' ', $trustedProxies)));
     }
-  s3.config.php: |-
-    <?php
-    if (getenv('OBJECTSTORE_S3_BUCKET')) {
-      $use_ssl = getenv('OBJECTSTORE_S3_SSL');
-      $use_path = getenv('OBJECTSTORE_S3_USEPATH_STYLE');
-      $use_legacyauth = getenv('OBJECTSTORE_S3_LEGACYAUTH');
-      $autocreate = getenv('OBJECTSTORE_S3_AUTOCREATE');
-      $CONFIG = array(
-        'objectstore' => array(
-          'class' => '\OC\Files\ObjectStore\S3',
-          'arguments' => array(
-            'bucket' => getenv('OBJECTSTORE_S3_BUCKET'),
-            'key' => getenv('OBJECTSTORE_S3_KEY') ?: '',
-            'secret' => getenv('OBJECTSTORE_S3_SECRET') ?: '',
-            'region' => getenv('OBJECTSTORE_S3_REGION') ?: '',
-            'hostname' => getenv('OBJECTSTORE_S3_HOST') ?: '',
-            'port' => getenv('OBJECTSTORE_S3_PORT') ?: '',
-            'objectPrefix' => getenv("OBJECTSTORE_S3_OBJECT_PREFIX") ? getenv("OBJECTSTORE_S3_OBJECT_PREFIX") : "urn:oid:",
-            'autocreate' => (strtolower($autocreate) === 'false' || $autocreate == false) ? false : true,
-            'use_ssl' => (strtolower($use_ssl) === 'false' || $use_ssl == false) ? false : true,
-            // required for some non Amazon S3 implementations
-            'use_path_style' => $use_path == true && strtolower($use_path) !== 'false',
-            // required for older protocol versions
-            'legacy_auth' => $use_legacyauth == true && strtolower($use_legacyauth) !== 'false'
-          )
-        )
-      );
-    }
   smtp.config.php: |-
     <?php
     if (getenv('SMTP_HOST') && getenv('MAIL_FROM_ADDRESS') && getenv('MAIL_DOMAIN')) {
@@ -515,24 +487,6 @@ spec:
     app.kubernetes.io/name: nextcloud
   type: ClusterIP
 ---
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  labels:
-    app.kubernetes.io/component: app
-    app.kubernetes.io/instance: nextcloud
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: nextcloud
-    helm.sh/chart: nextcloud-3.4.5
-  name: nextcloud-nextcloud
-spec:
-  accessModes:
-  - ReadWriteMany
-  resources:
-    requests:
-      storage: 8Gi
-  storageClassName: csi-cephfs-sc
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -555,7 +509,7 @@ spec:
   template:
     metadata:
       annotations:
-        nextcloud-config-hash: db3732caaf36cc250b735642a44de081b419a9977254cf9f4179aecda8a1e79b
+        nextcloud-config-hash: 9c792513d8b2f4184dbd8fd21b6834da78bc203266eb791a3f38efaad853b7bc
         php-config-hash: ed6e7a748d32ae48057eb6fb256f7a8e76756f106fde2ca6ed689b1202937c8e
       labels:
         app.kubernetes.io/component: app
@@ -616,7 +570,7 @@ spec:
           name: nextcloud-main
           subPath: html
         - mountPath: /var/www/html/data
-          name: nextcloud-main
+          name: nextcloud-data
           subPath: data
         - mountPath: /var/www/html/config
           name: nextcloud-main
@@ -633,9 +587,6 @@ spec:
         - mountPath: /var/www/html/config/reverse-proxy.config.php
           name: nextcloud-config
           subPath: reverse-proxy.config.php
-        - mountPath: /var/www/html/config/s3.config.php
-          name: nextcloud-config
-          subPath: s3.config.php
         - mountPath: /var/www/html/config/.htaccess
           name: nextcloud-config
           subPath: .htaccess
@@ -717,7 +668,7 @@ spec:
           name: nextcloud-main
           subPath: html
         - mountPath: /var/www/html/data
-          name: nextcloud-main
+          name: nextcloud-data
           subPath: data
         - mountPath: /var/www/html/config
           name: nextcloud-main
@@ -734,9 +685,6 @@ spec:
         - mountPath: /var/www/html/config/reverse-proxy.config.php
           name: nextcloud-config
           subPath: reverse-proxy.config.php
-        - mountPath: /var/www/html/config/s3.config.php
-          name: nextcloud-config
-          subPath: s3.config.php
         - mountPath: /var/www/html/config/.htaccess
           name: nextcloud-config
           subPath: .htaccess
@@ -774,6 +722,9 @@ spec:
       - name: nextcloud-main
         persistentVolumeClaim:
           claimName: nextcloud-nextcloud
+      - name: nextcloud-data
+        persistentVolumeClaim:
+          claimName: nextcloud-data
       - configMap:
           name: nextcloud-config
         name: nextcloud-config

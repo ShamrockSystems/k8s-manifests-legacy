@@ -1,0 +1,19 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: influxdb
+resources:
+  - ../../generated/influxdb
+  - ./sealedsecret.yaml
+  - ./httproute.yaml
+
+patchesJson6902:
+  - target: # Remove when generated build.yaml has correct apiVersion
+      version: v1beta1
+      kind: PodDisruptionBudget
+      name: '.*'
+      group: policy
+    patch: |-
+      - op: replace
+        path: "/apiVersion"
+        value: policy/v1

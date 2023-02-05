@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ./namespace.yaml
+
+helmCharts:
+  - releaseName: influxdb2
+    namespace: influxdb
+    name: influxdb2
+    repo: https://helm.influxdata.com/
+    version: 2.1.1
+    valuesFile: values.yaml

@@ -2,6 +2,11 @@ _build_dir: generated
 _sources_dir: external
 _version: v0.2.0
 builds:
+- build_datetime_utc: '2023-02-05T06:28:45.068417'
+  hash: e4969c623195def91d75f03ca1de70e47f036d87633436b0745c7139d05c5875
+  hash_type: sha256
+  name: influxdb
+  path: influxdb
 - build_datetime_utc: '2023-02-03T02:42:58.335664'
   hash: b8790b67e12c9a09894483014a08199a4bc3b423a235ce32a1335187077328a0
   hash_type: sha256

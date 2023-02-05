@@ -3,5 +3,5 @@ kind: Kustomization
 
 namespace: kiali
 resources:
-  - ../../bases/kiali
+  - ../../generated/kiali
   - ./httproute.yaml

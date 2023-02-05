@@ -386,7 +386,7 @@ data:
         ignore:
         - KIA1201
     login_token:
-      signing_key: mGp2AXHJUdMDwrPj
+      signing_key: excMawSDNFmsD287
     server:
       metrics_enabled: true
       metrics_port: 9090
@@ -462,7 +462,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 76b0942a6b64d727ee67865cc2538e2d9f33752186b2de2570e5ea9343430c44
+        checksum/config: 71ea059d845d62d38470f54d9391de3882e5eb0bd056032d685d48e9300c06e7
         kiali.io/dashboards: go,kiali
         prometheus.io/port: "9090"
         prometheus.io/scrape: "true"

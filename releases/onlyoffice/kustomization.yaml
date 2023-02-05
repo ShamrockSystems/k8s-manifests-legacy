@@ -3,7 +3,7 @@ kind: Kustomization
 
 namespace: onlyoffice
 resources:
-  - ../../bases/onlyoffice
+  - ../../generated/onlyoffice
   - ./sealedsecret.docs.yaml
   - ./sealedsecret.postgres.yaml
   - ./sealedsecret.redis.yaml

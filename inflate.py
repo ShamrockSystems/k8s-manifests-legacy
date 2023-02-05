@@ -12,11 +12,11 @@ import yaml
 from _hashlib import HASH
 from yaml import Dumper
 
-VERSION = 'v0.1.0'
+VERSION = 'v0.2.0'
 
 
 @dataclass(slots=True)
-class Base:
+class Build:
     name: str
     path: Path
     hash_type: str
@@ -24,7 +24,7 @@ class Base:
     build_datetime_utc: str
 
 
-def base_to_yaml(dumper: Dumper, data: Base):
+def base_to_yaml(dumper: Dumper, data: Build):
     return dumper.represent_dict({
         'name': data.name,
         'path': data.path,
@@ -52,84 +52,84 @@ def main():
     with open(Path(repo_path, '.inflate.lock.yaml'), encoding='utf-8') as f:
         lock = yaml.load(f, Loader=yaml.Loader)
 
-    bases_path = Path(repo_path, lock['_bases_dir'])
-    inflation_path = Path(repo_path, lock['_inflated_dir'])
+    sources_path = Path(repo_path, lock['_sources_dir'])
+    build_path = Path(repo_path, lock['_build_dir'])
 
-    lock_bases = {}
-    for bases_dict in lock['bases']:
-        lock_bases[bases_dict['name']] = (Base(
+    lock_builds = {}
+    for bases_dict in lock['builds']:
+        lock_builds[bases_dict['name']] = (Build(
             name=bases_dict['name'],
             path=Path(bases_dict['path']),
             hash_type=bases_dict['hash_type'],
             hash=bases_dict['hash'],
             build_datetime_utc=bases_dict['build_datetime_utc']
         ))
-    logger.info(f'Loaded {len(lock_bases)} bases from lockfile')
+    logger.info(f'Loaded {len(lock_builds)} builds from lockfile')
 
-    bases_dirs = set()
-    for test in bases_path.iterdir():
+    source_dirs = set()
+    for test in sources_path.iterdir():
         if test.is_dir() and \
                 (Path(test, 'kustomization.yml').exists() or
                 Path(test, 'kustomization.yaml').exists()):
-            bases_dirs.add(test)
-    logger.info(f'Detected {len(bases_dirs)} base directories in {bases_path}')
+            source_dirs.add(test)
+    logger.info(f'Detected {len(source_dirs)} source directories in {sources_path}')
 
-    inflation_targets: list[Base] = []
-    deflation_targets: list[Base] = []
-    keep: list[Base] = []
+    build_targets: list[Build] = []
+    clean_targets: list[Build] = []
+    keep: list[Build] = []
 
-    for lock_base in lock_bases.values():
-        if Path(bases_path, lock_base.path) not in bases_dirs:
-            deflation_targets.append(lock_base)
-            logger.info(f'Base "{lock_base.name}" is no longer in base directory, added to deflation')
+    for lock_build in lock_builds.values():
+        if Path(sources_path, lock_build.path) not in source_dirs:
+            clean_targets.append(lock_build)
+            logger.info(f'Base "{lock_build.name}" is no longer in base directory, added to deflation')
             continue
-        bases_dirs.remove(Path(bases_path, lock_base.path))
+        source_dirs.remove(Path(sources_path, lock_build.path))
         base_hash = str(dir_hash(
-            Path(bases_path, lock_base.path),
-            typing.cast(HASH, hashlib.new(lock_base.hash_type))
+            Path(sources_path, lock_build.path),
+            typing.cast(HASH, hashlib.new(lock_build.hash_type))
         ).hexdigest())
-        if base_hash != lock_base.hash:
-            logger.info(f'Base "{lock_base.name}" hash has changed, added to inflation')
-            lock_base.hash = base_hash
-            lock_base.build_datetime_utc = build_datetime_utc
-            inflation_targets.append(lock_base)
+        if base_hash != lock_build.hash:
+            logger.info(f'Base "{lock_build.name}" hash has changed, added to inflation')
+            lock_build.hash = base_hash
+            lock_build.build_datetime_utc = build_datetime_utc
+            build_targets.append(lock_build)
         else:
-            keep.append(lock_base)
+            keep.append(lock_build)
 
     default_hash_type = 'sha256'
-    for base_dir in bases_dirs:
-        inflation_targets.append(Base(
-            name=base_dir.name,
-            path=base_dir.relative_to(bases_path),
+    for source_dir in source_dirs:
+        build_targets.append(Build(
+            name=source_dir.name,
+            path=source_dir.relative_to(sources_path),
             hash_type=default_hash_type,
             hash=str(dir_hash(
-                Path(bases_path, base_dir),
+                Path(sources_path, source_dir),
                 typing.cast(HASH, hashlib.new(default_hash_type))
             ).hexdigest()),
             build_datetime_utc=build_datetime_utc
         ))
-        logger.info(f'Base "{inflation_targets[-1].name}" is new, added to inflation')
+        logger.info(f'Base "{build_targets[-1].name}" is new, added to build list')
 
-    logger.info(f'Processing {len(inflation_targets)} inflation entries')
-    for inflation_target in inflation_targets:
-        logger.info(f'Inflating {Path(bases_path.name, inflation_target.path)}...')
-        inflate_kustomization(Path(bases_path, inflation_target.path), bases_path, inflation_path)
-    logger.info(f'Processing {len(deflation_targets)} deflation entries')
-    for deflation_target in deflation_targets:
-        logger.info(f'Deflating {Path(inflation_path.name, deflation_target.path)}...')
-        deflate_kustomization(Path(bases_path, deflation_target.path), bases_path, inflation_path)
+    logger.info(f'Processing {len(build_targets)} build entries')
+    for inflation_target in build_targets:
+        logger.info(f'Building {Path(sources_path.name, inflation_target.path)}...')
+        inflate_kustomization(Path(sources_path, inflation_target.path), sources_path, build_path)
+    logger.info(f'Processing {len(clean_targets)} clean entries')
+    for deflation_target in clean_targets:
+        logger.info(f'Cleaning {Path(build_path.name, deflation_target.path)}...')
+        deflate_kustomization(Path(sources_path, deflation_target.path), sources_path, build_path)
 
     logger.info(f'Writing new lockfile...')
     with open(Path(repo_path, '.inflate.lock.yaml'), 'w', encoding='utf-8') as f:
-        yaml.add_representer(Base, base_to_yaml)
+        yaml.add_representer(Build, base_to_yaml)
         yaml.add_representer(Path, path_to_yaml)
         yaml.add_representer(WindowsPath, path_to_yaml)
         yaml.add_representer(PosixPath, path_to_yaml)
         yaml.dump({
-            '_bases_dir': bases_path.relative_to(repo_path),
-            '_inflated_dir': inflation_path.relative_to(repo_path),
+            '_sources_dir': sources_path.relative_to(repo_path),
+            '_build_dir': build_path.relative_to(repo_path),
             '_version': VERSION,
-            'bases': inflation_targets + keep
+            'builds': build_targets + keep
         }, f)
 
     logger.info(f'Complete in {time.perf_counter() - start_perf_time} seconds')

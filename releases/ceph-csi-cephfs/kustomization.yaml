@@ -3,4 +3,4 @@ kind: Kustomization
 
 resources:
   - ./sealedsecret.yaml
-  - ../../bases/ceph-csi-cephfs
+  - ../../generated/ceph-csi-cephfs

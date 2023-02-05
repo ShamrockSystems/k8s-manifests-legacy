@@ -3,7 +3,7 @@ kind: Kustomization
 
 namespace: nextcloud
 resources:
-  - ../../bases/nextcloud
+  - ../../generated/nextcloud
   - ./persistentvolumeclaim.yaml
   - ./sealedsecret.postgres.yaml
   - ./sealedsecret.redis.yaml

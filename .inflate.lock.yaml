@@ -2,6 +2,11 @@ _build_dir: generated
 _sources_dir: external
 _version: v0.2.0
 builds:
+- build_datetime_utc: '2023-02-06T03:12:04.949318'
+  hash: 0218900ee89743433dcf4795133bcf31606d90118fc4124d5f25aaa65397fe55
+  hash_type: sha256
+  name: grafana
+  path: grafana
 - build_datetime_utc: '2023-02-06T02:05:42.528407'
   hash: 61bb179bc01c04b2921d5046310789c2e2a8af910a1534d4c00ced587b2aa6d5
   hash_type: sha256

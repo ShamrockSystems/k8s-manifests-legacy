@@ -3,9 +3,10 @@ kind: Kustomization
 
 namespace: bookstack
 resources:
-  - ../../generated/bookstack # MariaDB
+  - ../../generated/bookstack # MariaDB, Redis
   - ./sealedsecret.bookstack.yaml
   - ./sealedsecret.mariadb.yaml
+  - ./sealedsecret.redis.yaml
   - ./configmap.yaml
   - ./persistentvolumeclaim.yaml
   - ./deployment.yaml

@@ -11,3 +11,9 @@ data:
   DB_DATABASE: bookstackapp
   AZURE_AUTO_REGISTER: "true"
   AZURE_AUTO_CONFIRM_EMAIL: "true"
+  AVATAR_URL: "false"
+  EXPORT_PAGE_SIZE: letter
+  STORAGE_TYPE: local
+  CACHE_DRIVER: redis
+  SESSION_DRIVER: redis
+  SESSION_SECURE_COOKIE: "true"

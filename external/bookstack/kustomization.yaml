@@ -11,3 +11,9 @@ helmCharts:
     repo: https://charts.bitnami.com/bitnami
     version: 11.4.5
     valuesFile: values.mariadb.yaml
+  - releaseName: bookstack-redis
+    namespace: bookstack
+    name: redis
+    repo: https://charts.bitnami.com/bitnami
+    version: 17.6.0
+    valuesFile: values.redis.yaml

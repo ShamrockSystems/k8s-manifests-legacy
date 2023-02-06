@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bookstack-env-cm
+  namespace: bookstack
+data:
+  APP_URL: https://shamrock.systems
+  DB_HOST: bookstack-mariadb
+  DB_PORT: "3306"
+  DB_USER: bookstack
+  DB_DATABASE: bookstackapp
+  AZURE_AUTO_REGISTER: "true"
+  AZURE_AUTO_CONFIRM_EMAIL: "true"

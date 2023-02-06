@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: bookstack
+  name: bookstack
+  namespace: bookstack
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bookstack
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: bookstack
+    spec:
+      containers:
+        - name: bookstack
+          image: lscr.io/linuxserver/bookstack:23.01.1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 2048Mi
+            requests:
+              cpu: 500m
+              memory: 512Mi
+          env:
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: bookstack-mariadb-secret
+                  key: mariadb-password
+          envFrom:
+            - secretRef:
+                name: bookstack-env-secret
+            - configMapRef:
+                name: bookstack-env-cm
+          volumeMounts:
+            - mountPath: /config
+              name: bookstack-files
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /
+              port: 80
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 3
+          readinessProbe:
+            failureThreshold: 2
+            httpGet:
+              path: /
+              port: 80
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 3
+          startupProbe:
+            failureThreshold: 30
+            httpGet:
+              path: /
+              port: 80
+            periodSeconds: 15
+      volumes:
+        - name: bookstack-files
+          persistentVolumeClaim:
+            claimName: bookstack-files

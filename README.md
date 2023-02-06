@@ -27,7 +27,7 @@ releases are Kustomizations.
 This repository prohibits the committing of `Secret` manifests. Please use [Sealed Secrets](https://github.com/bitnami-labs/sealed-secrets) instead. For example:
 
 ```sh
-kubeseal -f secret.yaml -w sealedsecret.yaml
+kubeseal -f secret.bookstack.yaml -w sealedsecret.yaml
 ```
 
 Helm charts are configured using Kustomizations in `base/`, to retrieve values for a given chart, use:

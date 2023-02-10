@@ -2,16 +2,16 @@ _build_dir: generated
 _sources_dir: external
 _version: v0.2.0
 builds:
+- build_datetime_utc: '2023-02-10T12:08:04.856655'
+  hash: 5a2191e2f65684f1253768bb67c15f196a16f869b81b1822cf8b2a5e67a8f862
+  hash_type: sha256
+  name: prometheus
+  path: prometheus
 - build_datetime_utc: '2023-02-10T11:59:14.655596'
   hash: 5f276f4eaebd0e29c9a5e93fbd74d8b9b7d83db92849af784dd52dbc56e68a5f
   hash_type: sha256
   name: grafana
   path: grafana
-- build_datetime_utc: '2023-02-10T11:32:26.394074'
-  hash: fa9720ede250730277edd84511ff749d6aee1840f78a7afa931f5d155f3c9b93
-  hash_type: sha256
-  name: prometheus
-  path: prometheus
 - build_datetime_utc: '2023-02-06T21:44:42.335767'
   hash: 10443723ece74915fa1cc313ebecbc714836f7c14f5fa3f5eb00dd0d5c2fabea
   hash_type: sha256

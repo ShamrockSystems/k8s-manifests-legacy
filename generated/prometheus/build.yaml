@@ -24,6 +24,23 @@ metadata:
   namespace: monitoring
 ---
 apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    app: kube-prometheus-stack-alertmanager
+    app.kubernetes.io/component: alertmanager
+    app.kubernetes.io/instance: kube-prometheus-stack
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: kube-prometheus-stack-alertmanager
+    app.kubernetes.io/part-of: kube-prometheus-stack
+    app.kubernetes.io/version: 44.3.0
+    chart: kube-prometheus-stack-44.3.0
+    heritage: Helm
+    release: kube-prometheus-stack
+  name: kube-prometheus-stack-alertmanager
+  namespace: monitoring
+---
+apiVersion: v1
 imagePullSecrets: []
 kind: ServiceAccount
 metadata:
@@ -600,6 +617,23 @@ subjects:
   namespace: monitoring
 ---
 apiVersion: v1
+data:
+  alertmanager.yaml: Z2xvYmFsOgogIHJlc29sdmVfdGltZW91dDogNW0KaW5oaWJpdF9ydWxlczoKLSBlcXVhbDoKICAtIG5hbWVzcGFjZQogIC0gYWxlcnRuYW1lCiAgc291cmNlX21hdGNoZXJzOgogIC0gc2V2ZXJpdHkgPSBjcml0aWNhbAogIHRhcmdldF9tYXRjaGVyczoKICAtIHNldmVyaXR5ID1+IHdhcm5pbmd8aW5mbwotIGVxdWFsOgogIC0gbmFtZXNwYWNlCiAgLSBhbGVydG5hbWUKICBzb3VyY2VfbWF0Y2hlcnM6CiAgLSBzZXZlcml0eSA9IHdhcm5pbmcKICB0YXJnZXRfbWF0Y2hlcnM6CiAgLSBzZXZlcml0eSA9IGluZm8KLSBlcXVhbDoKICAtIG5hbWVzcGFjZQogIHNvdXJjZV9tYXRjaGVyczoKICAtIGFsZXJ0bmFtZSA9IEluZm9JbmhpYml0b3IKICB0YXJnZXRfbWF0Y2hlcnM6CiAgLSBzZXZlcml0eSA9IGluZm8KcmVjZWl2ZXJzOgotIG5hbWU6ICJudWxsIgpyb3V0ZToKICBncm91cF9ieToKICAtIG5hbWVzcGFjZQogIGdyb3VwX2ludGVydmFsOiA1bQogIGdyb3VwX3dhaXQ6IDMwcwogIHJlY2VpdmVyOiAibnVsbCIKICByZXBlYXRfaW50ZXJ2YWw6IDEyaAogIHJvdXRlczoKICAtIG1hdGNoZXJzOgogICAgLSBhbGVydG5hbWUgPX4gIkluZm9JbmhpYml0b3J8V2F0Y2hkb2ciCiAgICByZWNlaXZlcjogIm51bGwiCnRlbXBsYXRlczoKLSAvZXRjL2FsZXJ0bWFuYWdlci9jb25maWcvKi50bXBs
+kind: Secret
+metadata:
+  labels:
+    app: kube-prometheus-stack-alertmanager
+    app.kubernetes.io/instance: kube-prometheus-stack
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: kube-prometheus-stack
+    app.kubernetes.io/version: 44.3.0
+    chart: kube-prometheus-stack-44.3.0
+    heritage: Helm
+    release: kube-prometheus-stack
+  name: alertmanager-kube-prometheus-stack-alertmanager
+  namespace: monitoring
+---
+apiVersion: v1
 kind: Endpoints
 metadata:
   labels:
@@ -795,6 +829,32 @@ spec:
     port: 10251
     protocol: TCP
     targetPort: 10251
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: kube-prometheus-stack-alertmanager
+    app.kubernetes.io/instance: kube-prometheus-stack
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: kube-prometheus-stack
+    app.kubernetes.io/version: 44.3.0
+    chart: kube-prometheus-stack-44.3.0
+    heritage: Helm
+    release: kube-prometheus-stack
+    self-monitor: "true"
+  name: kube-prometheus-stack-alertmanager
+  namespace: monitoring
+spec:
+  ports:
+  - name: http-web
+    port: 9093
+    protocol: TCP
+    targetPort: 9093
+  selector:
+    alertmanager: kube-prometheus-stack-alertmanager
+    app.kubernetes.io/name: alertmanager
   type: ClusterIP
 ---
 apiVersion: v1
@@ -1249,6 +1309,41 @@ spec:
       serviceAccountName: kube-prometheus-stack-admission
 ---
 apiVersion: monitoring.coreos.com/v1
+kind: Alertmanager
+metadata:
+  labels:
+    app: kube-prometheus-stack-alertmanager
+    app.kubernetes.io/instance: kube-prometheus-stack
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: kube-prometheus-stack
+    app.kubernetes.io/version: 44.3.0
+    chart: kube-prometheus-stack-44.3.0
+    heritage: Helm
+    release: kube-prometheus-stack
+  name: kube-prometheus-stack-alertmanager
+  namespace: monitoring
+spec:
+  alertmanagerConfigNamespaceSelector: {}
+  alertmanagerConfigSelector: {}
+  externalUrl: http://kube-prometheus-stack-alertmanager.monitoring:9093
+  image: quay.io/prometheus/alertmanager:v0.25.0
+  listenLocal: false
+  logFormat: logfmt
+  logLevel: info
+  paused: false
+  portName: http-web
+  replicas: 1
+  retention: 120h
+  routePrefix: /
+  securityContext:
+    fsGroup: 2000
+    runAsGroup: 2000
+    runAsNonRoot: true
+    runAsUser: 1000
+  serviceAccountName: kube-prometheus-stack-alertmanager
+  version: v0.25.0
+---
+apiVersion: monitoring.coreos.com/v1
 kind: Prometheus
 metadata:
   labels:
@@ -1263,6 +1358,13 @@ metadata:
   name: kube-prometheus-stack-prometheus
   namespace: monitoring
 spec:
+  alerting:
+    alertmanagers:
+    - apiVersion: v2
+      name: kube-prometheus-stack-alertmanager
+      namespace: monitoring
+      pathPrefix: /
+      port: http-web
   enableAdminAPI: false
   externalUrl: http://kube-prometheus-stack-prometheus.monitoring:9090
   hostNetwork: false
@@ -4455,6 +4557,34 @@ spec:
       for: 5m
       labels:
         severity: warning
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app: kube-prometheus-stack-alertmanager
+    app.kubernetes.io/instance: kube-prometheus-stack
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: kube-prometheus-stack
+    app.kubernetes.io/version: 44.3.0
+    chart: kube-prometheus-stack-44.3.0
+    heritage: Helm
+    release: kube-prometheus-stack
+  name: kube-prometheus-stack-alertmanager
+  namespace: monitoring
+spec:
+  endpoints:
+  - enableHttp2: true
+    path: /metrics
+    port: http-web
+  namespaceSelector:
+    matchNames:
+    - monitoring
+  selector:
+    matchLabels:
+      app: kube-prometheus-stack-alertmanager
+      release: kube-prometheus-stack
+      self-monitor: "true"
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor

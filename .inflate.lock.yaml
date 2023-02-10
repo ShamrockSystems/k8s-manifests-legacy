@@ -2,6 +2,11 @@ _build_dir: generated
 _sources_dir: external
 _version: v0.2.0
 builds:
+- build_datetime_utc: '2023-02-10T11:59:14.655596'
+  hash: 5f276f4eaebd0e29c9a5e93fbd74d8b9b7d83db92849af784dd52dbc56e68a5f
+  hash_type: sha256
+  name: grafana
+  path: grafana
 - build_datetime_utc: '2023-02-10T11:32:26.394074'
   hash: fa9720ede250730277edd84511ff749d6aee1840f78a7afa931f5d155f3c9b93
   hash_type: sha256
@@ -12,11 +17,6 @@ builds:
   hash_type: sha256
   name: bookstack
   path: bookstack
-- build_datetime_utc: '2023-02-06T03:12:04.949318'
-  hash: 0218900ee89743433dcf4795133bcf31606d90118fc4124d5f25aaa65397fe55
-  hash_type: sha256
-  name: grafana
-  path: grafana
 - build_datetime_utc: '2023-02-05T06:28:45.068417'
   hash: e4969c623195def91d75f03ca1de70e47f036d87633436b0745c7139d05c5875
   hash_type: sha256

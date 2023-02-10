@@ -2,6 +2,11 @@ _build_dir: generated
 _sources_dir: external
 _version: v0.2.0
 builds:
+- build_datetime_utc: '2023-02-10T11:32:26.394074'
+  hash: fa9720ede250730277edd84511ff749d6aee1840f78a7afa931f5d155f3c9b93
+  hash_type: sha256
+  name: prometheus
+  path: prometheus
 - build_datetime_utc: '2023-02-06T21:44:42.335767'
   hash: 10443723ece74915fa1cc313ebecbc714836f7c14f5fa3f5eb00dd0d5c2fabea
   hash_type: sha256
@@ -22,11 +27,6 @@ builds:
   hash_type: sha256
   name: nextcloud
   path: nextcloud
-- build_datetime_utc: '2023-02-02T18:03:23.114647'
-  hash: c84207e4d022b51e45ecf7da5294da72473a0bc6e31a872a8c5ac76d4e99cb42
-  hash_type: sha256
-  name: prometheus
-  path: prometheus
 - build_datetime_utc: '2023-02-02T17:09:22.559592'
   hash: a5a2a0e802529828bd697873e916e76bf1e466019e8e75e3014dfb7090b51cc5
   hash_type: sha256

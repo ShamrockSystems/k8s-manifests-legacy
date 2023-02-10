@@ -600,6 +600,81 @@ subjects:
   namespace: monitoring
 ---
 apiVersion: v1
+kind: Endpoints
+metadata:
+  labels:
+    app: kube-prometheus-stack-kube-controller-manager
+    app.kubernetes.io/instance: kube-prometheus-stack
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: kube-prometheus-stack
+    app.kubernetes.io/version: 44.3.0
+    chart: kube-prometheus-stack-44.3.0
+    heritage: Helm
+    k8s-app: kube-controller-manager
+    release: kube-prometheus-stack
+  name: kube-prometheus-stack-kube-controller-manager
+  namespace: kube-system
+subsets:
+- addresses:
+  - ip: 10.76.30.10
+  - ip: 10.76.30.11
+  - ip: 10.76.30.12
+  ports:
+  - name: http-metrics
+    port: 10252
+    protocol: TCP
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  labels:
+    app: kube-prometheus-stack-kube-proxy
+    app.kubernetes.io/instance: kube-prometheus-stack
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: kube-prometheus-stack
+    app.kubernetes.io/version: 44.3.0
+    chart: kube-prometheus-stack-44.3.0
+    heritage: Helm
+    k8s-app: kube-proxy
+    release: kube-prometheus-stack
+  name: kube-prometheus-stack-kube-proxy
+  namespace: kube-system
+subsets:
+- addresses:
+  - ip: 10.76.30.10
+  - ip: 10.76.30.11
+  - ip: 10.76.30.12
+  ports:
+  - name: http-metrics
+    port: 10249
+    protocol: TCP
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  labels:
+    app: kube-prometheus-stack-kube-scheduler
+    app.kubernetes.io/instance: kube-prometheus-stack
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: kube-prometheus-stack
+    app.kubernetes.io/version: 44.3.0
+    chart: kube-prometheus-stack-44.3.0
+    heritage: Helm
+    k8s-app: kube-scheduler
+    release: kube-prometheus-stack
+  name: kube-prometheus-stack-kube-scheduler
+  namespace: kube-system
+subsets:
+- addresses:
+  - ip: 10.76.30.10
+  - ip: 10.76.30.11
+  - ip: 10.76.30.12
+  ports:
+  - name: http-metrics
+    port: 10251
+    protocol: TCP
+---
+apiVersion: v1
 kind: Service
 metadata:
   labels:
@@ -646,8 +721,6 @@ spec:
     port: 10252
     protocol: TCP
     targetPort: 10252
-  selector:
-    component: kube-controller-manager
   type: ClusterIP
 ---
 apiVersion: v1
@@ -698,8 +771,6 @@ spec:
     port: 10249
     protocol: TCP
     targetPort: 10249
-  selector:
-    k8s-app: kube-proxy
   type: ClusterIP
 ---
 apiVersion: v1
@@ -724,8 +795,6 @@ spec:
     port: 10251
     protocol: TCP
     targetPort: 10251
-  selector:
-    component: kube-scheduler
   type: ClusterIP
 ---
 apiVersion: v1

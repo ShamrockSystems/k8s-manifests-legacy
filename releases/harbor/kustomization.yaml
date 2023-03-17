@@ -1,0 +1,53 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: harbor
+resources:
+  - ../../generated/harbor
+  - ./sealedsecret.postgres.yaml
+  - ./sealedsecret.redis.yaml
+  - ./sealedsecret.harbor.yaml
+  - ./sealedsecret.harbor-core-override.yaml
+  - ./sealedsecret.harbor-jobservice-override.yaml
+  - ./httproute.harbor.yaml
+
+# There's quite a bit broken with the helm chart in terms of referencing external secrets
+# As a stop-gap, they're patched here. Track the issue: https://github.com/goharbor/harbor-helm/issues/1214
+patchesJson6902:
+  - target:
+      version: v1
+      kind: ConfigMap
+      name: harbor-core
+    patch: |
+      - op: remove
+        path: "/data/_REDIS_URL_CORE"
+      - op: remove
+        path: "/data/_REDIS_URL_REG"
+  - target:
+      version: v1
+      kind: Deployment
+      name: harbor-core
+    patch: |
+      - op: add
+        path: "/spec/template/spec/containers/0/envFrom/-"
+        value:
+          secretRef:
+            name: harbor-core-override-secret
+  - target:
+      version: v1
+      kind: ConfigMap
+      name: harbor-jobservice
+    patch: |
+      - op: remove
+        path: "/data/config.yml"
+  - target:
+      version: v1
+      kind: Deployment
+      name: harbor-jobservice
+    patch: |
+      - op: replace
+        path: "/spec/template/spec/volumes/0"
+        value:
+          secret:
+            secretName: harbor-jobservice-override-secret
+          name: jobservice-config

@@ -2,6 +2,11 @@ _build_dir: generated
 _sources_dir: external
 _version: v0.2.0
 builds:
+- build_datetime_utc: '2023-03-17T08:36:57.506538'
+  hash: e67455290dbcac85b60844c4d9dfd2f9cb93f80c2f255b097940c5688b4d2187
+  hash_type: sha256
+  name: harbor
+  path: harbor
 - build_datetime_utc: '2023-02-10T12:08:04.856655'
   hash: 5a2191e2f65684f1253768bb67c15f196a16f869b81b1822cf8b2a5e67a8f862
   hash_type: sha256

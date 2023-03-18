@@ -13,6 +13,8 @@ resources:
 
 # There's quite a bit broken with the helm chart in terms of referencing external secrets
 # As a stop-gap, they're patched here. Track the issue: https://github.com/goharbor/harbor-helm/issues/1214
+# There's a few secrets that I haven't caught and sealed yet,
+# but they're not nearly as important, so I'll get to them later
 patchesJson6902:
   - target:
       version: v1
@@ -51,3 +53,14 @@ patchesJson6902:
           secret:
             secretName: harbor-jobservice-override-secret
           name: jobservice-config
+  - target: # See https://github.com/goharbor/harbor-helm/pull/1228
+      version: v1
+      kind: Service
+      name: harbor-registry
+    patch: |
+      - op: replace
+        path: "/spec/ports/0"
+        value:
+          name: http-registry
+          port: 5000
+          appProtocol: tcp

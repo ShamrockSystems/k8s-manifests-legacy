@@ -11,29 +11,29 @@ spec:
     - matches:
         - path:
             type: PathPrefix
-            value: /
+            value: /api
+        - path:
+            type: PathPrefix
+            value: /c
+        - path:
+            type: PathPrefix
+            value: /chartrepo
+        - path:
+            type: PathPrefix
+            value: /service
+        - path:
+            type: PathPrefix
+            value: /v1
+        - path:
+            type: PathPrefix
+            value: /v2
       backendRefs:
-        - name: harbor-portal
+        - name: harbor-core
           port: 80
     - matches:
         - path:
             type: PathPrefix
-            value: /api/
-        - path:
-            type: PathPrefix
-            value: /c/
-        - path:
-            type: PathPrefix
-            value: /chartrepo/
-        - path:
-            type: PathPrefix
-            value: /service/
-        - path:
-            type: PathPrefix
-            value: /v1/
-        - path:
-            type: PathPrefix
-            value: /v2/
+            value: /
       backendRefs:
-        - name: harbor-core
+        - name: harbor-portal
           port: 80

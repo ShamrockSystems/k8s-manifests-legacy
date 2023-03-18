@@ -419,7 +419,7 @@ nginx:
   serviceAccountName: ""
   # mount the service account token
   automountServiceAccountToken: false
-  replicas: 1
+  replicas: 0
   revisionHistoryLimit: 10
   # resources:
   #  requests:

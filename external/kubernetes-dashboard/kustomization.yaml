@@ -3,3 +3,17 @@ kind: Kustomization
 
 resources:
   - https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml
+
+helmCharts:
+  - releaseName: oauth2-proxy-redis
+    namespace: kubernetes-dashboard
+    name: redis
+    repo: https://charts.bitnami.com/bitnami
+    version: 17.6.0
+    valuesFile: values.redis.yaml
+  - releaseName: oauth2-proxy
+    namespace: kubernetes-dashboard
+    name: oauth2-proxy
+    repo: https://charts.bitnami.com/bitnami
+    version: 3.4.9
+    valuesFile: values.oauth2-proxy.yaml

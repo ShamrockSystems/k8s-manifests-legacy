@@ -3,3 +3,6 @@ kind: Kustomization
 
 resources:
   - ../../generated/kubernetes-dashboard
+  - ./sealedsecret.oauth2-proxy.yaml
+  - ./sealedsecret.oauth2-proxy-redis.yaml
+  - ./httproute.yaml

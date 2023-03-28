@@ -2,6 +2,11 @@ _build_dir: generated
 _sources_dir: external
 _version: v0.2.0
 builds:
+- build_datetime_utc: '2023-03-28T11:55:01.324559'
+  hash: 6b8e9c5914bd142620dbed37ff0035bb71a9f3dfe40b808bbdc4adced76e796f
+  hash_type: sha256
+  name: kubernetes-dashboard
+  path: kubernetes-dashboard
 - build_datetime_utc: '2023-03-28T10:49:20.149182'
   hash: 7a3d3fa38877a68ed3ef1142560b1ef7fb0cb67fd7f5069958df630316a2ee59
   hash_type: sha256
@@ -77,11 +82,6 @@ builds:
   hash_type: sha256
   name: cert-manager
   path: cert-manager
-- build_datetime_utc: '2023-01-13T20:52:32.412509'
-  hash: bb88cf9f49c5315978b287c4588f72717710f74d00abeb4cd9df63c160ae71ad
-  hash_type: sha256
-  name: kubernetes-dashboard
-  path: kubernetes-dashboard
 - build_datetime_utc: '2023-01-12T17:26:33.720289'
   hash: 5527280e81e7ef71b444e647b66cbe672dff22d545820248b61ffe2b8491ce99
   hash_type: sha256

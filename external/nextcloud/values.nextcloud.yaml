@@ -10,9 +10,9 @@ image:
 
 nameOverride: ""
 fullnameOverride: ""
-podAnnotations: { }
-deploymentAnnotations: { }
-deploymentLabels: { }
+podAnnotations: {}
+deploymentAnnotations: {}
+deploymentLabels: {}
 
 # Number of replicas to be deployed
 replicaCount: 1
@@ -23,7 +23,7 @@ replicaCount: 1
 ingress:
   enabled: false
   # className: nginx
-  annotations: { }
+  annotations: {}
   #  nginx.ingress.kubernetes.io/proxy-body-size: 4G
   #  kubernetes.io/tls-acme: "true"
   #  cert-manager.io/cluster-issuer: letsencrypt-prod
@@ -55,16 +55,16 @@ ingress:
   #   - secretName: nextcloud-tls
   #     hosts:
   #       - nextcloud.kube.home
-  labels: { }
+  labels: {}
   path: /
   pathType: Prefix
 
 
 # Allow configuration of lifecycle hooks
 # ref: https://kubernetes.io/docs/tasks/configure-pod-container/attach-handler-lifecycle-event/
-lifecycle: { }
+lifecycle: {}
   # postStartCommand: []
-# preStopCommand: []
+  # preStopCommand: []
 
 phpClientHttpsFix:
   enabled: true
@@ -205,13 +205,13 @@ nextcloud:
   #        key: secret_key
 
   # Extra init containers that runs before pods start.
-  extraInitContainers: [ ]
+  extraInitContainers: []
   #  - name: do-something
   #    image: busybox
   #    command: ['do', 'something']
 
   # Extra sidecar containers.
-  extraSidecarContainers: [ ]
+  extraSidecarContainers: []
   #  - name: nextcloud-logger
   #    image: busybox
   #    command: [/bin/sh, -c, 'while ! test -f "/run/nextcloud/data/nextcloud.log"; do sleep 1; done; tail -n+1 -f /run/nextcloud/data/nextcloud.log']
@@ -232,14 +232,14 @@ nextcloud:
   #    mountPath: "/legacy_data"
 
   # Set securityContext parameters. For example, you may need to define runAsNonRoot directive
-  securityContext: { }
+  securityContext: {}
   #   runAsUser: "33"
   #   runAsGroup: "33"
   #   runAsNonRoot: true
   #   readOnlyRootFilesystem: true
 
   # Set securityContext parameters for the pod. For example, you may need to define runAsNonRoot directive
-  podSecurityContext: { }
+  podSecurityContext: {}
   #   runAsUser: "33"
   #   runAsGroup: "33"
   #   runAsNonRoot: true
@@ -259,10 +259,10 @@ nginx:
     # custom: |-
     #     worker_processes  1;..
 
-  resources: { }
+  resources: {}
 
   # Set securityContext parameters. For example, you may need to define runAsNonRoot directive
-  securityContext: { }
+  securityContext: {}
   #   runAsUser: "82"
   #   runAsGroup: "33"
   #   runAsNonRoot: true
@@ -362,13 +362,18 @@ redis:
 cronjob:
   enabled: true
 
+  ## Cronjob sidecar resource requests and limits
+  ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
+  ##
+  resources: {}
+
   # Allow configuration of lifecycle hooks
   # ref: https://kubernetes.io/docs/tasks/configure-pod-container/attach-handler-lifecycle-event/
-  lifecycle: { }
+  lifecycle: {}
     # postStartCommand: []
-  # preStopCommand: []
+    # preStopCommand: []
   # Set securityContext parameters. For example, you may need to define runAsNonRoot directive
-  securityContext: { }
+  securityContext: {}
   #   runAsUser: "33"
   #   runAsGroup: "33"
   #   runAsNonRoot: true
@@ -409,7 +414,7 @@ persistence:
   nextcloudData:
     enabled: true
     subPath:
-    annotations: { }
+    annotations: {}
     # storageClass: "-"
     existingClaim: "nextcloud-data"
     accessMode: ReadWriteMany
@@ -462,11 +467,11 @@ hpa:
   minPods: 1
   maxPods: 10
 
-nodeSelector: { }
+nodeSelector: {}
 
-tolerations: [ ]
+tolerations: []
 
-affinity: { }
+affinity: {}
 
 
 ## Prometheus Exporter / Metrics
@@ -508,7 +513,7 @@ metrics:
     annotations:
       prometheus.io/scrape: "true"
       prometheus.io/port: "9205"
-    labels: { }
+    labels: {}
 
   ## Prometheus Operator ServiceMonitor configuration
   ##
@@ -537,7 +542,7 @@ metrics:
 
     ## @param metrics.serviceMonitor.labels Extra labels for the ServiceMonitor
     ##
-    labels: { }
+    labels: {}
 
 
 rbac:
@@ -545,8 +550,8 @@ rbac:
   serviceaccount:
     create: true
     name: nextcloud-serviceaccount
-    annotations: { }
+    annotations: {}
 
 
 ## @param securityContext @deprecated Use `nextcloud.podSecurityContext` instead
-securityContext: { }
+securityContext: {}

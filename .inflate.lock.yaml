@@ -2,6 +2,11 @@ _build_dir: generated
 _sources_dir: external
 _version: v0.2.0
 builds:
+- build_datetime_utc: '2023-03-28T10:49:20.149182'
+  hash: 7a3d3fa38877a68ed3ef1142560b1ef7fb0cb67fd7f5069958df630316a2ee59
+  hash_type: sha256
+  name: nextcloud
+  path: nextcloud
 - build_datetime_utc: '2023-03-28T10:14:50.014049'
   hash: 5fbdef6faba818a31e18f4ebb2b8d9bfc25f45f250f61f569401a602cf94379b
   hash_type: sha256
@@ -32,11 +37,6 @@ builds:
   hash_type: sha256
   name: influxdb
   path: influxdb
-- build_datetime_utc: '2023-02-03T02:42:58.335664'
-  hash: b8790b67e12c9a09894483014a08199a4bc3b423a235ce32a1335187077328a0
-  hash_type: sha256
-  name: nextcloud
-  path: nextcloud
 - build_datetime_utc: '2023-02-02T17:09:22.559592'
   hash: a5a2a0e802529828bd697873e916e76bf1e466019e8e75e3014dfb7090b51cc5
   hash_type: sha256

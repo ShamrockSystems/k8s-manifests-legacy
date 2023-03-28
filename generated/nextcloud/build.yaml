@@ -349,7 +349,7 @@ metadata:
     app.kubernetes.io/instance: nextcloud
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: nextcloud
-    helm.sh/chart: nextcloud-3.4.5
+    helm.sh/chart: nextcloud-3.5.4
   name: nextcloud-config
 ---
 apiVersion: v1
@@ -368,7 +368,7 @@ metadata:
     app.kubernetes.io/instance: nextcloud
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: nextcloud
-    helm.sh/chart: nextcloud-3.4.5
+    helm.sh/chart: nextcloud-3.5.4
   name: nextcloud-phpconfig
 ---
 apiVersion: v1
@@ -453,6 +453,7 @@ metadata:
   name: nextcloud-redis-master
   namespace: nextcloud
 spec:
+  internalTrafficPolicy: Cluster
   ports:
   - name: tcp-redis
     nodePort: null
@@ -473,7 +474,7 @@ metadata:
     app.kubernetes.io/instance: nextcloud
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: nextcloud
-    helm.sh/chart: nextcloud-3.4.5
+    helm.sh/chart: nextcloud-3.5.4
   name: nextcloud
 spec:
   ports:
@@ -495,7 +496,7 @@ metadata:
     app.kubernetes.io/instance: nextcloud
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: nextcloud
-    helm.sh/chart: nextcloud-3.4.5
+    helm.sh/chart: nextcloud-3.5.4
   name: nextcloud
 spec:
   replicas: 1
@@ -548,7 +549,7 @@ spec:
           value: office.shamrock.systems
         - name: NEXTCLOUD_DATA_DIR
           value: /var/www/html/data
-        image: nextcloud:25.0.3-apache
+        image: nextcloud:26.0.0-apache
         imagePullPolicy: IfNotPresent
         name: nextcloud
         ports:
@@ -650,16 +651,10 @@ spec:
           value: office.shamrock.systems
         - name: NEXTCLOUD_DATA_DIR
           value: /var/www/html/data
-        image: nextcloud:25.0.3-apache
+        image: nextcloud:26.0.0-apache
         imagePullPolicy: IfNotPresent
         name: nextcloud-cron
-        resources:
-          limits:
-            cpu: 6000m
-            memory: 8192Mi
-          requests:
-            cpu: 1000m
-            memory: 2048Mi
+        resources: {}
         volumeMounts:
         - mountPath: /var/www/
           name: nextcloud-main

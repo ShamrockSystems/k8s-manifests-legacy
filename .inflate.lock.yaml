@@ -2,6 +2,11 @@ _build_dir: generated
 _sources_dir: external
 _version: v0.2.0
 builds:
+- build_datetime_utc: '2023-03-28T10:14:50.014049'
+  hash: 5fbdef6faba818a31e18f4ebb2b8d9bfc25f45f250f61f569401a602cf94379b
+  hash_type: sha256
+  name: argo-cd
+  path: argo-cd
 - build_datetime_utc: '2023-03-18T01:19:19.572775'
   hash: 3350dc1fa6965782299dd524d2b0531cd021aee8110e837b3e55f1d79b8d590b
   hash_type: sha256
@@ -57,11 +62,6 @@ builds:
   hash_type: sha256
   name: ceph-csi-rbd
   path: ceph-csi-rbd
-- build_datetime_utc: '2023-01-21T01:13:58.627970'
-  hash: 84375c2b3241afaa219108ed035059bc783fa7b003463163da6e6a71d980ecd4
-  hash_type: sha256
-  name: argo-cd
-  path: argo-cd
 - build_datetime_utc: '2023-01-20T21:16:23.656905'
   hash: cfd46f0c8c23f316452cd1336f3fdec05fc1ec109d76e28194c22809ac213dbe
   hash_type: sha256

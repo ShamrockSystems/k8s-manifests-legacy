@@ -5,8 +5,10 @@ namespace: argocd
 resources:
   - ./namespace.yaml
   - ../../generated/argo-cd
+  - ./sealedsecret.yaml
   - ./httproute.yaml
 
 patchesStrategicMerge:
   - ./overlays/configmap.yaml
   - ./overlays/networkpolicy.yaml
+  - ./overlays/secoverride.yaml

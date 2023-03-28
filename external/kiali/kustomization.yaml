@@ -1,13 +1,22 @@
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
+ apiVersion: kustomize.config.k8s.io/v1beta1
+ kind: Kustomization
 
-resources:
-  - ./namespace.yaml
-
-helmCharts:
-  - releaseName: kiali-server
-    namespace: kiali
-    name: kiali-server
-    repo: https://kiali.org/helm-charts
-    version: 1.63.1
-    valuesFile: values.yaml
+ helmCharts:
+   - releaseName: kiali-server
+     namespace: kiali
+     name: kiali-server
+     repo: https://kiali.org/helm-charts
+     version: 1.63.1
+     valuesFile: values.kiali.yaml
+   - releaseName: oauth2-proxy-redis
+     namespace: kiali
+     name: redis
+     repo: https://charts.bitnami.com/bitnami
+     version: 17.6.0
+     valuesFile: values.redis.yaml
+   - releaseName: oauth2-proxy
+     namespace: kiali
+     name: oauth2-proxy
+     repo: https://charts.bitnami.com/bitnami
+     version: 3.4.9
+     valuesFile: values.oauth2-proxy.yaml

@@ -1,12 +1,4 @@
 apiVersion: v1
-kind: Namespace
-metadata:
-  labels:
-    istio-injection: enabled
-    name: kiali
-  name: kiali
----
-apiVersion: v1
 kind: ServiceAccount
 metadata:
   labels:
@@ -19,6 +11,31 @@ metadata:
     helm.sh/chart: kiali-server-1.63.1
     version: v1.63.1
   name: kiali
+  namespace: kiali
+---
+apiVersion: v1
+automountServiceAccountToken: true
+kind: ServiceAccount
+metadata:
+  labels:
+    app.kubernetes.io/component: oauth2-proxy
+    app.kubernetes.io/instance: oauth2-proxy
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: oauth2-proxy
+    helm.sh/chart: oauth2-proxy-3.4.9
+  name: oauth2-proxy
+  namespace: kiali
+---
+apiVersion: v1
+automountServiceAccountToken: true
+kind: ServiceAccount
+metadata:
+  labels:
+    app.kubernetes.io/instance: oauth2-proxy-redis
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: redis
+    helm.sh/chart: redis-17.6.0
+  name: oauth2-proxy-redis
   namespace: kiali
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -298,7 +315,7 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: kiali
+  name: kiali-viewer
 subjects:
 - kind: ServiceAccount
   name: kiali
@@ -311,7 +328,7 @@ data:
       openid: {}
       openshift:
         client_id_prefix: kiali
-      strategy: anonymous
+      strategy: header
     deployment:
       accessible_namespaces:
       - '**'
@@ -364,8 +381,14 @@ data:
     external_services:
       custom_dashboards:
         enabled: true
+      grafana:
+        enabled: true
+        in_cluster_url: http://grafana.grafana/
+        url: https://grafana.shamrock.systems/
       istio:
         root_namespace: kiali
+      prometheus:
+        url: http://kube-prometheus-stack-prometheus.monitoring:9090/
     identity:
       cert_file: ""
       private_key_file: ""
@@ -386,7 +409,7 @@ data:
         ignore:
         - KIA1201
     login_token:
-      signing_key: excMawSDNFmsD287
+      signing_key: Ipgfn1vbzwPfhzQS
     server:
       metrics_enabled: true
       metrics_port: 9090
@@ -404,6 +427,187 @@ metadata:
     helm.sh/chart: kiali-server-1.63.1
     version: v1.63.1
   name: kiali
+  namespace: kiali
+---
+apiVersion: v1
+data:
+  oauth2_proxy.cfg: |
+    email_domains = [ "*" ]
+    upstreams = [ "http://kiali.kiali.svc.cluster.local" ]
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/component: oauth2-proxy
+    app.kubernetes.io/instance: oauth2-proxy
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: oauth2-proxy
+    helm.sh/chart: oauth2-proxy-3.4.9
+  name: oauth2-proxy
+  namespace: kiali
+---
+apiVersion: v1
+data:
+  master.conf: |-
+    dir /data
+    # User-supplied master configuration:
+    rename-command FLUSHDB ""
+    rename-command FLUSHALL ""
+    # End of master configuration
+  redis.conf: |-
+    # User-supplied common configuration:
+    # Enable AOF https://redis.io/topics/persistence#append-only-file
+    appendonly yes
+    # Disable RDB persistence, AOF persistence already enabled.
+    save ""
+    # End of common configuration
+  replica.conf: |-
+    dir /data
+    # User-supplied replica configuration:
+    rename-command FLUSHDB ""
+    rename-command FLUSHALL ""
+    # End of replica configuration
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/instance: oauth2-proxy-redis
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: redis
+    helm.sh/chart: redis-17.6.0
+  name: oauth2-proxy-redis-configuration
+  namespace: kiali
+---
+apiVersion: v1
+data:
+  ping_liveness_local.sh: |-
+    #!/bin/bash
+
+    [[ -f $REDIS_PASSWORD_FILE ]] && export REDIS_PASSWORD="$(< "${REDIS_PASSWORD_FILE}")"
+    [[ -n "$REDIS_PASSWORD" ]] && export REDISCLI_AUTH="$REDIS_PASSWORD"
+    response=$(
+      timeout -s 3 $1 \
+      redis-cli \
+        -h localhost \
+        -p $REDIS_PORT \
+        ping
+    )
+    if [ "$?" -eq "124" ]; then
+      echo "Timed out"
+      exit 1
+    fi
+    responseFirstWord=$(echo $response | head -n1 | awk '{print $1;}')
+    if [ "$response" != "PONG" ] && [ "$responseFirstWord" != "LOADING" ] && [ "$responseFirstWord" != "MASTERDOWN" ]; then
+      echo "$response"
+      exit 1
+    fi
+  ping_liveness_local_and_master.sh: |-
+    script_dir="$(dirname "$0")"
+    exit_status=0
+    "$script_dir/ping_liveness_local.sh" $1 || exit_status=$?
+    "$script_dir/ping_liveness_master.sh" $1 || exit_status=$?
+    exit $exit_status
+  ping_liveness_master.sh: |-
+    #!/bin/bash
+
+    [[ -f $REDIS_MASTER_PASSWORD_FILE ]] && export REDIS_MASTER_PASSWORD="$(< "${REDIS_MASTER_PASSWORD_FILE}")"
+    [[ -n "$REDIS_MASTER_PASSWORD" ]] && export REDISCLI_AUTH="$REDIS_MASTER_PASSWORD"
+    response=$(
+      timeout -s 3 $1 \
+      redis-cli \
+        -h $REDIS_MASTER_HOST \
+        -p $REDIS_MASTER_PORT_NUMBER \
+        ping
+    )
+    if [ "$?" -eq "124" ]; then
+      echo "Timed out"
+      exit 1
+    fi
+    responseFirstWord=$(echo $response | head -n1 | awk '{print $1;}')
+    if [ "$response" != "PONG" ] && [ "$responseFirstWord" != "LOADING" ]; then
+      echo "$response"
+      exit 1
+    fi
+  ping_readiness_local.sh: |-
+    #!/bin/bash
+
+    [[ -f $REDIS_PASSWORD_FILE ]] && export REDIS_PASSWORD="$(< "${REDIS_PASSWORD_FILE}")"
+    [[ -n "$REDIS_PASSWORD" ]] && export REDISCLI_AUTH="$REDIS_PASSWORD"
+    response=$(
+      timeout -s 3 $1 \
+      redis-cli \
+        -h localhost \
+        -p $REDIS_PORT \
+        ping
+    )
+    if [ "$?" -eq "124" ]; then
+      echo "Timed out"
+      exit 1
+    fi
+    if [ "$response" != "PONG" ]; then
+      echo "$response"
+      exit 1
+    fi
+  ping_readiness_local_and_master.sh: |-
+    script_dir="$(dirname "$0")"
+    exit_status=0
+    "$script_dir/ping_readiness_local.sh" $1 || exit_status=$?
+    "$script_dir/ping_readiness_master.sh" $1 || exit_status=$?
+    exit $exit_status
+  ping_readiness_master.sh: |-
+    #!/bin/bash
+
+    [[ -f $REDIS_MASTER_PASSWORD_FILE ]] && export REDIS_MASTER_PASSWORD="$(< "${REDIS_MASTER_PASSWORD_FILE}")"
+    [[ -n "$REDIS_MASTER_PASSWORD" ]] && export REDISCLI_AUTH="$REDIS_MASTER_PASSWORD"
+    response=$(
+      timeout -s 3 $1 \
+      redis-cli \
+        -h $REDIS_MASTER_HOST \
+        -p $REDIS_MASTER_PORT_NUMBER \
+        ping
+    )
+    if [ "$?" -eq "124" ]; then
+      echo "Timed out"
+      exit 1
+    fi
+    if [ "$response" != "PONG" ]; then
+      echo "$response"
+      exit 1
+    fi
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/instance: oauth2-proxy-redis
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: redis
+    helm.sh/chart: redis-17.6.0
+  name: oauth2-proxy-redis-health
+  namespace: kiali
+---
+apiVersion: v1
+data:
+  start-master.sh: |
+    #!/bin/bash
+
+    [[ -f $REDIS_PASSWORD_FILE ]] && export REDIS_PASSWORD="$(< "${REDIS_PASSWORD_FILE}")"
+    if [[ -f /opt/bitnami/redis/mounted-etc/master.conf ]];then
+        cp /opt/bitnami/redis/mounted-etc/master.conf /opt/bitnami/redis/etc/master.conf
+    fi
+    if [[ -f /opt/bitnami/redis/mounted-etc/redis.conf ]];then
+        cp /opt/bitnami/redis/mounted-etc/redis.conf /opt/bitnami/redis/etc/redis.conf
+    fi
+    ARGS=("--port" "${REDIS_PORT}")
+    ARGS+=("--requirepass" "${REDIS_PASSWORD}")
+    ARGS+=("--masterauth" "${REDIS_PASSWORD}")
+    ARGS+=("--include" "/opt/bitnami/redis/etc/redis.conf")
+    ARGS+=("--include" "/opt/bitnami/redis/etc/master.conf")
+    exec redis-server "${ARGS[@]}"
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/instance: oauth2-proxy-redis
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: redis
+    helm.sh/chart: redis-17.6.0
+  name: oauth2-proxy-redis-scripts
   namespace: kiali
 ---
 apiVersion: v1
@@ -434,6 +638,77 @@ spec:
     app.kubernetes.io/instance: kiali
     app.kubernetes.io/name: kiali
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/component: oauth2-proxy
+    app.kubernetes.io/instance: oauth2-proxy
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: oauth2-proxy
+    helm.sh/chart: oauth2-proxy-3.4.9
+  name: oauth2-proxy
+  namespace: kiali
+spec:
+  ports:
+  - name: http
+    nodePort: null
+    port: 80
+    protocol: TCP
+    targetPort: http
+  selector:
+    app.kubernetes.io/component: oauth2-proxy
+    app.kubernetes.io/instance: oauth2-proxy
+    app.kubernetes.io/name: oauth2-proxy
+  sessionAffinity: None
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/instance: oauth2-proxy-redis
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: redis
+    helm.sh/chart: redis-17.6.0
+  name: oauth2-proxy-redis-headless
+  namespace: kiali
+spec:
+  clusterIP: None
+  ports:
+  - name: tcp-redis
+    port: 6379
+    targetPort: redis
+  selector:
+    app.kubernetes.io/instance: oauth2-proxy-redis
+    app.kubernetes.io/name: redis
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/component: master
+    app.kubernetes.io/instance: oauth2-proxy-redis
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: redis
+    helm.sh/chart: redis-17.6.0
+  name: oauth2-proxy-redis-master
+  namespace: kiali
+spec:
+  internalTrafficPolicy: Cluster
+  ports:
+  - name: tcp-redis
+    nodePort: null
+    port: 6379
+    targetPort: redis
+  selector:
+    app.kubernetes.io/component: master
+    app.kubernetes.io/instance: oauth2-proxy-redis
+    app.kubernetes.io/name: redis
+  sessionAffinity: None
+  type: ClusterIP
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -462,7 +737,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 71ea059d845d62d38470f54d9391de3882e5eb0bd056032d685d48e9300c06e7
+        checksum/config: f9bfd4d7b6bfcc186fa4f11c909d07fb10616c50cf4c02831a80583295d213bc
         kiali.io/dashboards: go,kiali
         prometheus.io/port: "9090"
         prometheus.io/scrape: "true"
@@ -557,3 +832,279 @@ spec:
           name: kiali-cabundle
           optional: true
         name: kiali-cabundle
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: oauth2-proxy
+    app.kubernetes.io/instance: oauth2-proxy
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: oauth2-proxy
+    helm.sh/chart: oauth2-proxy-3.4.9
+  name: oauth2-proxy
+  namespace: kiali
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: oauth2-proxy
+      app.kubernetes.io/instance: oauth2-proxy
+      app.kubernetes.io/name: oauth2-proxy
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        checksum/config: 305e323950ef46e0f03e8041d8fc1e873ab1d8cb0bbc8ef7ee13afe80f415821
+      labels:
+        app.kubernetes.io/component: oauth2-proxy
+        app.kubernetes.io/instance: oauth2-proxy
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: oauth2-proxy
+        helm.sh/chart: oauth2-proxy-3.4.9
+    spec:
+      affinity:
+        nodeAffinity: null
+        podAffinity: null
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/component: oauth2-proxy
+                  app.kubernetes.io/instance: oauth2-proxy
+                  app.kubernetes.io/name: oauth2-proxy
+              topologyKey: kubernetes.io/hostname
+            weight: 1
+      containers:
+      - args:
+        - --http-address=0.0.0.0:4180
+        - --config=/bitnami/oauth2-proxy/conf/oauth2_proxy.cfg
+        - --provider=oidc
+        - --azure-tenant=7380c786-e737-424b-b1ff-fa4e2ff85ef4
+        - --oidc-issuer-url=https://sts.windows.net/7380c786-e737-424b-b1ff-fa4e2ff85ef4/
+        - --ssl-upstream-insecure-skip-verify=true
+        - --skip-provider-button=true
+        - --pass-authorization-header=true
+        - --oidc-email-claim=upn
+        - --cookie-refresh=60m
+        env:
+        - name: OAUTH2_PROXY_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              key: client-id
+              name: oauth2-proxy-secret
+        - name: OAUTH2_PROXY_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: client-secret
+              name: oauth2-proxy-secret
+        - name: OAUTH2_PROXY_COOKIE_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: cookie-secret
+              name: oauth2-proxy-secret
+        - name: OAUTH2_PROXY_SESSION_STORE_TYPE
+          value: redis
+        - name: OAUTH2_PROXY_REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: redis-password
+              name: oauth2-proxy-redis-secret
+        - name: OAUTH2_PROXY_REDIS_CONNECTION_URL
+          value: redis://oauth2-proxy-redis-master.kiali.svc.cluster.local:6379
+        envFrom: null
+        image: docker.io/bitnami/oauth2-proxy:7.4.0-debian-11-r50
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 5
+          httpGet:
+            path: /ping
+            port: http
+            scheme: HTTP
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        name: oauth2-proxy
+        ports:
+        - containerPort: 4180
+          name: http
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 5
+          httpGet:
+            path: /ping
+            port: http
+            scheme: HTTP
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        resources:
+          limits: {}
+          requests: {}
+        securityContext:
+          runAsUser: 1001
+        volumeMounts:
+        - mountPath: /bitnami/oauth2-proxy/conf
+          name: main-configuration
+      securityContext:
+        fsGroup: 1001
+      serviceAccountName: oauth2-proxy
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: oauth2-proxy
+        name: main-configuration
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app.kubernetes.io/component: master
+    app.kubernetes.io/instance: oauth2-proxy-redis
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: redis
+    helm.sh/chart: redis-17.6.0
+  name: oauth2-proxy-redis-master
+  namespace: kiali
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: master
+      app.kubernetes.io/instance: oauth2-proxy-redis
+      app.kubernetes.io/name: redis
+  serviceName: oauth2-proxy-redis-headless
+  template:
+    metadata:
+      annotations:
+        checksum/configmap: 7d32b7f5240bd797b01f72979fe5096f8a59dcbd4b85f28b2d85f067689f59f5
+        checksum/health: f27e118f20c0c549463884f58f6665689b439ecdcedbb409b9ba98e2ed3abf95
+        checksum/scripts: b7d7add845fde0d097c08954948f89c8f0405ad51fde4b8e3aaf15ce8f0f1558
+        checksum/secret: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+      labels:
+        app.kubernetes.io/component: master
+        app.kubernetes.io/instance: oauth2-proxy-redis
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: redis
+        helm.sh/chart: redis-17.6.0
+    spec:
+      affinity:
+        nodeAffinity: null
+        podAffinity: null
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/component: master
+                  app.kubernetes.io/instance: oauth2-proxy-redis
+                  app.kubernetes.io/name: redis
+              topologyKey: kubernetes.io/hostname
+            weight: 1
+      containers:
+      - args:
+        - -c
+        - /opt/bitnami/scripts/start-scripts/start-master.sh
+        command:
+        - /bin/bash
+        env:
+        - name: BITNAMI_DEBUG
+          value: "false"
+        - name: REDIS_REPLICATION_MODE
+          value: master
+        - name: ALLOW_EMPTY_PASSWORD
+          value: "no"
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: redis-password
+              name: oauth2-proxy-redis-secret
+        - name: REDIS_TLS_ENABLED
+          value: "no"
+        - name: REDIS_PORT
+          value: "6379"
+        image: docker.io/bitnami/redis:7.0.8-debian-11-r0
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - /health/ping_liveness_local.sh 5
+          failureThreshold: 5
+          initialDelaySeconds: 20
+          periodSeconds: 5
+          successThreshold: 1
+          timeoutSeconds: 6
+        name: redis
+        ports:
+        - containerPort: 6379
+          name: redis
+        readinessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - /health/ping_readiness_local.sh 1
+          failureThreshold: 5
+          initialDelaySeconds: 20
+          periodSeconds: 5
+          successThreshold: 1
+          timeoutSeconds: 2
+        resources:
+          limits: {}
+          requests: {}
+        securityContext:
+          runAsUser: 1001
+        volumeMounts:
+        - mountPath: /opt/bitnami/scripts/start-scripts
+          name: start-scripts
+        - mountPath: /health
+          name: health
+        - mountPath: /data
+          name: redis-data
+        - mountPath: /opt/bitnami/redis/mounted-etc
+          name: config
+        - mountPath: /opt/bitnami/redis/etc/
+          name: redis-tmp-conf
+        - mountPath: /tmp
+          name: tmp
+      securityContext:
+        fsGroup: 1001
+      serviceAccountName: oauth2-proxy-redis
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - configMap:
+          defaultMode: 493
+          name: oauth2-proxy-redis-scripts
+        name: start-scripts
+      - configMap:
+          defaultMode: 493
+          name: oauth2-proxy-redis-health
+        name: health
+      - configMap:
+          name: oauth2-proxy-redis-configuration
+        name: config
+      - emptyDir: {}
+        name: redis-tmp-conf
+      - emptyDir: {}
+        name: tmp
+  updateStrategy:
+    type: OnDelete
+  volumeClaimTemplates:
+  - metadata:
+      labels:
+        app.kubernetes.io/component: master
+        app.kubernetes.io/instance: oauth2-proxy-redis
+        app.kubernetes.io/name: redis
+      name: redis-data
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 8Gi

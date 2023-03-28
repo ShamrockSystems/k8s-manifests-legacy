@@ -23,7 +23,7 @@ istio_namespace: "istio-system" # default is where Kiali is installed
 auth:
   openid: {}
   openshift: {}
-  strategy: "anonymous"
+  strategy: "header"
 
 deployment:
   # This only limits what Kiali will attempt to see, but Kiali Service Account has permissions to see everything.
@@ -80,8 +80,16 @@ deployment:
 external_services:
   custom_dashboards:
     enabled: true
+  grafana:
+    enabled: true
+    # Grafana service name is "grafana" and is in the "telemetry" namespace.
+    in_cluster_url: 'http://grafana.grafana/'
+    # Public facing URL of Grafana
+    url: 'https://grafana.shamrock.systems/'
   istio:
     root_namespace: ""
+  prometheus:
+    url: "http://kube-prometheus-stack-prometheus.monitoring:9090/"
 
 identity: {}
   #cert_file:

@@ -2,6 +2,16 @@ _build_dir: generated
 _sources_dir: external
 _version: v0.2.0
 builds:
+- build_datetime_utc: '2023-03-28T18:58:29.283844'
+  hash: 9d2ad6b106abdba53bdc30dd8bf2715d36da17eae646345fdebd46af6786d739
+  hash_type: sha256
+  name: prometheus
+  path: prometheus
+- build_datetime_utc: '2023-03-28T17:44:23.458592'
+  hash: 12201f064c1b70f8339d3f6b6e88c608cc99bbb5c49415ff9f5e8c6d86c9c02b
+  hash_type: sha256
+  name: kiali
+  path: kiali
 - build_datetime_utc: '2023-03-28T12:19:47.083263'
   hash: 7bc415b5327748d054592366160a9c26c762c04b378fc1dba23775300d81cf92
   hash_type: sha256
@@ -27,11 +37,6 @@ builds:
   hash_type: sha256
   name: harbor
   path: harbor
-- build_datetime_utc: '2023-02-10T12:08:04.856655'
-  hash: 5a2191e2f65684f1253768bb67c15f196a16f869b81b1822cf8b2a5e67a8f862
-  hash_type: sha256
-  name: prometheus
-  path: prometheus
 - build_datetime_utc: '2023-02-10T11:59:14.655596'
   hash: 5f276f4eaebd0e29c9a5e93fbd74d8b9b7d83db92849af784dd52dbc56e68a5f
   hash_type: sha256
@@ -52,11 +57,6 @@ builds:
   hash_type: sha256
   name: crd
   path: crd
-- build_datetime_utc: '2023-02-02T06:05:16.827607'
-  hash: 1147765b4fcbdd45810d8b7640ea3396052f0e630b6eea237dca7bde584a7925
-  hash_type: sha256
-  name: kiali
-  path: kiali
 - build_datetime_utc: '2023-02-02T04:40:52.921604'
   hash: c4fe570e2ef41311c727270779a0efd20466345706aebda3109c258709ace181
   hash_type: sha256

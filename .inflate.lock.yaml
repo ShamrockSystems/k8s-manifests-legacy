@@ -2,6 +2,11 @@ _build_dir: generated
 _sources_dir: external
 _version: v0.2.0
 builds:
+- build_datetime_utc: '2023-03-28T12:19:47.083263'
+  hash: 7bc415b5327748d054592366160a9c26c762c04b378fc1dba23775300d81cf92
+  hash_type: sha256
+  name: istio
+  path: istio
 - build_datetime_utc: '2023-03-28T11:55:01.324559'
   hash: 6b8e9c5914bd142620dbed37ff0035bb71a9f3dfe40b808bbdc4adced76e796f
   hash_type: sha256
@@ -67,11 +72,6 @@ builds:
   hash_type: sha256
   name: ceph-csi-rbd
   path: ceph-csi-rbd
-- build_datetime_utc: '2023-01-20T21:16:23.656905'
-  hash: cfd46f0c8c23f316452cd1336f3fdec05fc1ec109d76e28194c22809ac213dbe
-  hash_type: sha256
-  name: istio
-  path: istio
 - build_datetime_utc: '2023-01-13T20:52:32.412509'
   hash: 2648964aa588ec43f958d2d23ae20ecfcff329b1eb8bf5d21695805f3045f137
   hash_type: sha256

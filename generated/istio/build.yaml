@@ -9222,17 +9222,19 @@ spec:
             cpu: 100m
             memory: 128Mi
         securityContext:
-          allowPrivilegeEscalation: true
+          allowPrivilegeEscalation: false
           capabilities:
-            add:
-            - NET_BIND_SERVICE
             drop:
             - ALL
+          privileged: false
           readOnlyRootFilesystem: true
           runAsGroup: 1337
-          runAsNonRoot: false
-          runAsUser: 0
-      securityContext: null
+          runAsNonRoot: true
+          runAsUser: 1337
+      securityContext:
+        sysctls:
+        - name: net.ipv4.ip_unprivileged_port_start
+          value: "0"
       serviceAccountName: istio-gateway
 ---
 apiVersion: apps/v1
@@ -9393,7 +9395,7 @@ spec:
           optional: true
         name: istio-csr-ca-configmap
 ---
-apiVersion: policy/v1beta1
+apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
   labels:
@@ -9412,7 +9414,7 @@ spec:
       app: istiod
       istio: pilot
 ---
-apiVersion: autoscaling/v2beta2
+apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   labels:
@@ -9425,7 +9427,7 @@ metadata:
   name: istio-gateway
   namespace: istio-ingress
 spec:
-  maxReplicas: 5
+  maxReplicas: 3
   metrics:
   - resource:
       name: cpu
@@ -9439,7 +9441,7 @@ spec:
     kind: Deployment
     name: istio-gateway
 ---
-apiVersion: autoscaling/v2beta2
+apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   labels:
@@ -9451,7 +9453,7 @@ metadata:
   name: istiod
   namespace: istio-system
 spec:
-  maxReplicas: 5
+  maxReplicas: 3
   metrics:
   - resource:
       name: cpu

@@ -2,6 +2,11 @@ _build_dir: generated
 _sources_dir: external
 _version: v0.2.0
 builds:
+- build_datetime_utc: '2023-03-31T04:40:10.464142'
+  hash: e9713971bc41c4b0b07bc979c752c2aabac59cf653e6e107ea4c666fd0090406
+  hash_type: sha256
+  name: crd
+  path: crd
 - build_datetime_utc: '2023-03-28T18:58:29.283844'
   hash: 9d2ad6b106abdba53bdc30dd8bf2715d36da17eae646345fdebd46af6786d739
   hash_type: sha256
@@ -52,11 +57,6 @@ builds:
   hash_type: sha256
   name: influxdb
   path: influxdb
-- build_datetime_utc: '2023-02-02T17:09:22.559592'
-  hash: a5a2a0e802529828bd697873e916e76bf1e466019e8e75e3014dfb7090b51cc5
-  hash_type: sha256
-  name: crd
-  path: crd
 - build_datetime_utc: '2023-02-02T04:40:52.921604'
   hash: c4fe570e2ef41311c727270779a0efd20466345706aebda3109c258709ace181
   hash_type: sha256

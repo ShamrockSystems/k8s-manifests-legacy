@@ -37,6 +37,188 @@ spec:
     singular: authorizationpolicy
   scope: Namespaced
   versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        properties:
+          spec:
+            description: 'Configuration for access control on workloads. See more
+              details at: https://istio.io/docs/reference/config/security/authorization-policy.html'
+            oneOf:
+            - not:
+                anyOf:
+                - required:
+                  - provider
+            - required:
+              - provider
+            properties:
+              action:
+                description: Optional.
+                enum:
+                - ALLOW
+                - DENY
+                - AUDIT
+                - CUSTOM
+                type: string
+              provider:
+                description: Specifies detailed configuration of the CUSTOM action.
+                properties:
+                  name:
+                    description: Specifies the name of the extension provider.
+                    type: string
+                type: object
+              rules:
+                description: Optional.
+                items:
+                  properties:
+                    from:
+                      description: Optional.
+                      items:
+                        properties:
+                          source:
+                            description: Source specifies the source of a request.
+                            properties:
+                              ipBlocks:
+                                description: Optional.
+                                items:
+                                  type: string
+                                type: array
+                              namespaces:
+                                description: Optional.
+                                items:
+                                  type: string
+                                type: array
+                              notIpBlocks:
+                                description: Optional.
+                                items:
+                                  type: string
+                                type: array
+                              notNamespaces:
+                                description: Optional.
+                                items:
+                                  type: string
+                                type: array
+                              notPrincipals:
+                                description: Optional.
+                                items:
+                                  type: string
+                                type: array
+                              notRemoteIpBlocks:
+                                description: Optional.
+                                items:
+                                  type: string
+                                type: array
+                              notRequestPrincipals:
+                                description: Optional.
+                                items:
+                                  type: string
+                                type: array
+                              principals:
+                                description: Optional.
+                                items:
+                                  type: string
+                                type: array
+                              remoteIpBlocks:
+                                description: Optional.
+                                items:
+                                  type: string
+                                type: array
+                              requestPrincipals:
+                                description: Optional.
+                                items:
+                                  type: string
+                                type: array
+                            type: object
+                        type: object
+                      type: array
+                    to:
+                      description: Optional.
+                      items:
+                        properties:
+                          operation:
+                            description: Operation specifies the operation of a request.
+                            properties:
+                              hosts:
+                                description: Optional.
+                                items:
+                                  type: string
+                                type: array
+                              methods:
+                                description: Optional.
+                                items:
+                                  type: string
+                                type: array
+                              notHosts:
+                                description: Optional.
+                                items:
+                                  type: string
+                                type: array
+                              notMethods:
+                                description: Optional.
+                                items:
+                                  type: string
+                                type: array
+                              notPaths:
+                                description: Optional.
+                                items:
+                                  type: string
+                                type: array
+                              notPorts:
+                                description: Optional.
+                                items:
+                                  type: string
+                                type: array
+                              paths:
+                                description: Optional.
+                                items:
+                                  type: string
+                                type: array
+                              ports:
+                                description: Optional.
+                                items:
+                                  type: string
+                                type: array
+                            type: object
+                        type: object
+                      type: array
+                    when:
+                      description: Optional.
+                      items:
+                        properties:
+                          key:
+                            description: The name of an Istio attribute.
+                            type: string
+                          notValues:
+                            description: Optional.
+                            items:
+                              type: string
+                            type: array
+                          values:
+                            description: Optional.
+                            items:
+                              type: string
+                            type: array
+                        type: object
+                      type: array
+                  type: object
+                type: array
+              selector:
+                description: Optional.
+                properties:
+                  matchLabels:
+                    additionalProperties:
+                      type: string
+                    type: object
+                type: object
+            type: object
+          status:
+            type: object
+            x-kubernetes-preserve-unknown-fields: true
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}
   - name: v1beta1
     schema:
       openAPIV3Schema:
@@ -3112,6 +3294,7 @@ spec:
                       - CLUSTER
                       - EXTENSION_CONFIG
                       - BOOTSTRAP
+                      - LISTENER_FILTER
                       type: string
                     match:
                       description: Match on listener/route configuration/cluster.
@@ -3196,6 +3379,9 @@ spec:
                                   description: Applies only to `SIDECAR_INBOUND` context.
                                   type: string
                               type: object
+                            listenerFilter:
+                              description: Match a specific listener filter.
+                              type: string
                             name:
                               description: Match a specific listener by its name.
                               type: string
@@ -3790,6 +3976,90 @@ spec:
     singular: requestauthentication
   scope: Namespaced
   versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        properties:
+          spec:
+            description: RequestAuthentication defines what request authentication
+              methods are supported by a workload.
+            properties:
+              jwtRules:
+                description: Define the list of JWTs that can be validated at the
+                  selected workloads' proxy.
+                items:
+                  properties:
+                    audiences:
+                      items:
+                        type: string
+                      type: array
+                    forwardOriginalToken:
+                      description: If set to true, the original token will be kept
+                        for the upstream request.
+                      type: boolean
+                    fromHeaders:
+                      description: List of header locations from which JWT is expected.
+                      items:
+                        properties:
+                          name:
+                            description: The HTTP header name.
+                            type: string
+                          prefix:
+                            description: The prefix that should be stripped before
+                              decoding the token.
+                            type: string
+                        type: object
+                      type: array
+                    fromParams:
+                      description: List of query parameters from which JWT is expected.
+                      items:
+                        type: string
+                      type: array
+                    issuer:
+                      description: Identifies the issuer that issued the JWT.
+                      type: string
+                    jwks:
+                      description: JSON Web Key Set of public keys to validate signature
+                        of the JWT.
+                      type: string
+                    jwks_uri:
+                      type: string
+                    jwksUri:
+                      type: string
+                    outputClaimToHeaders:
+                      description: This field specifies a list of operations to copy
+                        the claim to HTTP headers on a successfully verified token.
+                      items:
+                        properties:
+                          claim:
+                            description: The name of the claim to be copied from.
+                            type: string
+                          header:
+                            description: The name of the header to be created.
+                            type: string
+                        type: object
+                      type: array
+                    outputPayloadToHeader:
+                      type: string
+                  type: object
+                type: array
+              selector:
+                description: Optional.
+                properties:
+                  matchLabels:
+                    additionalProperties:
+                      type: string
+                    type: object
+                type: object
+            type: object
+          status:
+            type: object
+            x-kubernetes-preserve-unknown-fields: true
+        type: object
+    served: true
+    storage: false
+    subresources:
+      status: {}
   - name: v1beta1
     schema:
       openAPIV3Schema:
@@ -3840,6 +4110,19 @@ spec:
                       type: string
                     jwksUri:
                       type: string
+                    outputClaimToHeaders:
+                      description: This field specifies a list of operations to copy
+                        the claim to HTTP headers on a successfully verified token.
+                      items:
+                        properties:
+                          claim:
+                            description: The name of the claim to be copied from.
+                            type: string
+                          header:
+                            description: The name of the header to be created.
+                            type: string
+                        type: object
+                      type: array
                     outputPayloadToHeader:
                       type: string
                   type: object
@@ -3897,7 +4180,7 @@ spec:
       jsonPath: .spec.location
       name: Location
       type: string
-    - description: Service discovery mode for the hosts (NONE, STATIC, or DNS)
+    - description: Service resolution mode for the hosts (NONE, STATIC, or DNS)
       jsonPath: .spec.resolution
       name: Resolution
       type: string
@@ -3983,7 +4266,7 @@ spec:
                   type: object
                 type: array
               resolution:
-                description: Service discovery mode for the hosts.
+                description: Service resolution mode for the hosts.
                 enum:
                 - NONE
                 - STATIC
@@ -4021,7 +4304,7 @@ spec:
       jsonPath: .spec.location
       name: Location
       type: string
-    - description: Service discovery mode for the hosts (NONE, STATIC, or DNS)
+    - description: Service resolution mode for the hosts (NONE, STATIC, or DNS)
       jsonPath: .spec.resolution
       name: Resolution
       type: string
@@ -4107,7 +4390,7 @@ spec:
                   type: object
                 type: array
               resolution:
-                description: Service discovery mode for the hosts.
+                description: Service resolution mode for the hosts.
                 enum:
                 - NONE
                 - STATIC
@@ -4667,6 +4950,9 @@ spec:
                             type: string
                         type: object
                       type: array
+                    reportingInterval:
+                      description: Optional.
+                      type: string
                   type: object
                 type: array
               selector:
@@ -6965,8 +7251,8 @@ metadata:
     app: istio-gateway
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: istio-gateway
-    app.kubernetes.io/version: 1.16.1
-    helm.sh/chart: gateway-1.16.1
+    app.kubernetes.io/version: 1.17.1
+    helm.sh/chart: gateway-1.17.1
     istio: gateway
   name: istio-gateway
   namespace: istio-ingress
@@ -7492,6 +7778,18 @@ rules:
   - ""
   resources:
   - services
+  verbs:
+  - get
+  - watch
+  - list
+  - update
+  - patch
+  - create
+  - delete
+- apiGroups:
+  - ""
+  resources:
+  - serviceaccounts
   verbs:
   - get
   - watch
@@ -8146,6 +8444,10 @@ data:
               value: "{{ $containers | join "," }}"
             - name: ISTIO_META_CLUSTER_ID
               value: "{{ valueOrDefault .Values.global.multiCluster.clusterName `Kubernetes` }}"
+            - name: ISTIO_META_NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
             - name: ISTIO_META_INTERCEPTION_MODE
               value: "{{ or (index .ObjectMeta.Annotations `sidecar.istio.io/interceptionMode`) .ProxyConfig.InterceptionMode.String }}"
             {{- if .Values.global.network }}
@@ -8471,6 +8773,10 @@ data:
               value: "{{ $containers | join "," }}"
             - name: ISTIO_META_CLUSTER_ID
               value: "{{ valueOrDefault .Values.global.multiCluster.clusterName `Kubernetes` }}"
+            - name: ISTIO_META_NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
             - name: ISTIO_META_INTERCEPTION_MODE
               value: "{{ .ProxyConfig.InterceptionMode.String }}"
             {{- if .Values.global.network }}
@@ -8808,6 +9114,10 @@ data:
               value: "{{ $containers | join "," }}"
             - name: ISTIO_META_CLUSTER_ID
               value: "{{ valueOrDefault .Values.global.multiCluster.clusterName `Kubernetes` }}"
+            - name: ISTIO_META_NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
             {{- if .Values.global.network }}
             - name: ISTIO_META_NETWORK
               value: "{{ .Values.global.network }}"
@@ -8993,6 +9303,7 @@ data:
         "autoscalingv2API": true,
         "caAddress": "",
         "caName": "",
+        "certSigners": [],
         "configCluster": false,
         "defaultPodDisruptionBudget": {
           "enabled": true
@@ -9071,7 +9382,7 @@ data:
         "sts": {
           "servicePort": 0
         },
-        "tag": "1.16.1",
+        "tag": "1.17.1",
         "tracer": {
           "datadog": {
             "address": "$(HOST_IP):8126"
@@ -9121,8 +9432,8 @@ metadata:
     app: istio-gateway
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: istio-gateway
-    app.kubernetes.io/version: 1.16.1
-    helm.sh/chart: gateway-1.16.1
+    app.kubernetes.io/version: 1.17.1
+    helm.sh/chart: gateway-1.17.1
     istio: gateway
   name: istio-gateway
   namespace: istio-ingress
@@ -9183,8 +9494,8 @@ metadata:
     app: istio-gateway
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: istio-gateway
-    app.kubernetes.io/version: 1.16.1
-    helm.sh/chart: gateway-1.16.1
+    app.kubernetes.io/version: 1.17.1
+    helm.sh/chart: gateway-1.17.1
     istio: gateway
   name: istio-gateway
   namespace: istio-ingress
@@ -9316,7 +9627,7 @@ spec:
           value: "false"
         - name: CLUSTER_ID
           value: Kubernetes
-        image: docker.io/istio/pilot:1.16.1
+        image: docker.io/istio/pilot:1.17.1
         name: discovery
         ports:
         - containerPort: 8080
@@ -9421,8 +9732,8 @@ metadata:
     app: istio-gateway
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: istio-gateway
-    app.kubernetes.io/version: 1.16.1
-    helm.sh/chart: gateway-1.16.1
+    app.kubernetes.io/version: 1.17.1
+    helm.sh/chart: gateway-1.17.1
     istio: gateway
   name: istio-gateway
   namespace: istio-ingress
@@ -9932,6 +10243,76 @@ kind: EnvoyFilter
 metadata:
   labels:
     istio.io/rev: default
+  name: stats-filter-1.17
+  namespace: istio-system
+spec:
+  configPatches:
+  - applyTo: HTTP_FILTER
+    match:
+      context: SIDECAR_OUTBOUND
+      listener:
+        filterChain:
+          filter:
+            name: envoy.filters.network.http_connection_manager
+            subFilter:
+              name: envoy.filters.http.router
+      proxy:
+        proxyVersion: ^1\.17.*
+    patch:
+      operation: INSERT_BEFORE
+      value:
+        name: istio.stats
+        typed_config:
+          '@type': type.googleapis.com/udpa.type.v1.TypedStruct
+          type_url: type.googleapis.com/stats.PluginConfig
+          value: {}
+  - applyTo: HTTP_FILTER
+    match:
+      context: SIDECAR_INBOUND
+      listener:
+        filterChain:
+          filter:
+            name: envoy.filters.network.http_connection_manager
+            subFilter:
+              name: envoy.filters.http.router
+      proxy:
+        proxyVersion: ^1\.17.*
+    patch:
+      operation: INSERT_BEFORE
+      value:
+        name: istio.stats
+        typed_config:
+          '@type': type.googleapis.com/udpa.type.v1.TypedStruct
+          type_url: type.googleapis.com/stats.PluginConfig
+          value:
+            disable_host_header_fallback: true
+  - applyTo: HTTP_FILTER
+    match:
+      context: GATEWAY
+      listener:
+        filterChain:
+          filter:
+            name: envoy.filters.network.http_connection_manager
+            subFilter:
+              name: envoy.filters.http.router
+      proxy:
+        proxyVersion: ^1\.17.*
+    patch:
+      operation: INSERT_BEFORE
+      value:
+        name: istio.stats
+        typed_config:
+          '@type': type.googleapis.com/udpa.type.v1.TypedStruct
+          type_url: type.googleapis.com/stats.PluginConfig
+          value:
+            disable_host_header_fallback: true
+  priority: -1
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: EnvoyFilter
+metadata:
+  labels:
+    istio.io/rev: default
   name: tcp-stats-filter-1.13
   namespace: istio-system
 spec:
@@ -10353,6 +10734,68 @@ spec:
                     inline_string: envoy.wasm.stats
                 runtime: envoy.wasm.runtime.null
                 vm_id: tcp_stats_outbound
+  priority: -1
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: EnvoyFilter
+metadata:
+  labels:
+    istio.io/rev: default
+  name: tcp-stats-filter-1.17
+  namespace: istio-system
+spec:
+  configPatches:
+  - applyTo: NETWORK_FILTER
+    match:
+      context: SIDECAR_INBOUND
+      listener:
+        filterChain:
+          filter:
+            name: envoy.filters.network.tcp_proxy
+      proxy:
+        proxyVersion: ^1\.17.*
+    patch:
+      operation: INSERT_BEFORE
+      value:
+        name: istio.stats
+        typed_config:
+          '@type': type.googleapis.com/udpa.type.v1.TypedStruct
+          type_url: type.googleapis.com/stats.PluginConfig
+          value: {}
+  - applyTo: NETWORK_FILTER
+    match:
+      context: SIDECAR_OUTBOUND
+      listener:
+        filterChain:
+          filter:
+            name: envoy.filters.network.tcp_proxy
+      proxy:
+        proxyVersion: ^1\.17.*
+    patch:
+      operation: INSERT_BEFORE
+      value:
+        name: istio.stats
+        typed_config:
+          '@type': type.googleapis.com/udpa.type.v1.TypedStruct
+          type_url: type.googleapis.com/stats.PluginConfig
+          value: {}
+  - applyTo: NETWORK_FILTER
+    match:
+      context: GATEWAY
+      listener:
+        filterChain:
+          filter:
+            name: envoy.filters.network.tcp_proxy
+      proxy:
+        proxyVersion: ^1\.17.*
+    patch:
+      operation: INSERT_BEFORE
+      value:
+        name: istio.stats
+        typed_config:
+          '@type': type.googleapis.com/udpa.type.v1.TypedStruct
+          type_url: type.googleapis.com/stats.PluginConfig
+          value: {}
   priority: -1
 ---
 apiVersion: admissionregistration.k8s.io/v1

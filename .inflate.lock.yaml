@@ -2,6 +2,11 @@ _build_dir: generated
 _sources_dir: external
 _version: v0.2.0
 builds:
+- build_datetime_utc: '2023-04-02T06:56:42.565703'
+  hash: d4b6bd44cceba09872035bcef6c827f90e934f4b48876204e4973ad980298ada
+  hash_type: sha256
+  name: istio
+  path: istio
 - build_datetime_utc: '2023-03-31T04:40:10.464142'
   hash: e9713971bc41c4b0b07bc979c752c2aabac59cf653e6e107ea4c666fd0090406
   hash_type: sha256
@@ -17,11 +22,6 @@ builds:
   hash_type: sha256
   name: kiali
   path: kiali
-- build_datetime_utc: '2023-03-28T12:19:47.083263'
-  hash: 7bc415b5327748d054592366160a9c26c762c04b378fc1dba23775300d81cf92
-  hash_type: sha256
-  name: istio
-  path: istio
 - build_datetime_utc: '2023-03-28T11:55:01.324559'
   hash: 6b8e9c5914bd142620dbed37ff0035bb71a9f3dfe40b808bbdc4adced76e796f
   hash_type: sha256

@@ -17,21 +17,3 @@ patchesJson6902:
       - op: replace
         path: "/webhooks/0/failurePolicy"
         value: Fail
-  - target: # Remove when generated build.yaml has correct apiVersion
-      version: v1beta1
-      kind: PodDisruptionBudget
-      name: '.*'
-      group: policy
-    patch: |-
-      - op: replace
-        path: "/apiVersion"
-        value: policy/v1
-  - target: # Remove when generated build.yaml has correct apiVersion
-      version: v2beta2
-      kind: HorizontalPodAutoscaler
-      name: '.*'
-      group: autoscaling
-    patch: |-
-      - op: replace
-        path: "/apiVersion"
-        value: autoscaling/v2

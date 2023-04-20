@@ -384,12 +384,18 @@ redis:
 ## ref: https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/background_jobs_configuration.html#cron
 ##
 cronjob:
-  enabled: false
+  enabled: true
 
   ## Cronjob sidecar resource requests and limits
   ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
   ##
-  resources: {}
+  resources:
+    limits:
+      cpu: 2000m
+      memory: 4096Mi
+    requests:
+      cpu: 1000m
+      memory: 2048Mi
 
   # Allow configuration of lifecycle hooks
   # ref: https://kubernetes.io/docs/tasks/configure-pod-container/attach-handler-lifecycle-event/
@@ -450,8 +456,8 @@ resources:
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
   limits:
-    cpu: 6000m
-    memory: 8192Mi
+    cpu: 2000m
+    memory: 4096Mi
   requests:
     cpu: 1000m
     memory: 2048Mi

@@ -2,6 +2,11 @@ _build_dir: generated
 _sources_dir: external
 _version: v0.2.0
 builds:
+- build_datetime_utc: '2023-04-20T18:08:44.822512'
+  hash: bf3ddd1c625713d71c3c3119fd121e7fcb4ce6673b6c8defbb90ca9929c77130
+  hash_type: sha256
+  name: nextcloud
+  path: nextcloud
 - build_datetime_utc: '2023-04-02T06:56:42.565703'
   hash: d4b6bd44cceba09872035bcef6c827f90e934f4b48876204e4973ad980298ada
   hash_type: sha256
@@ -27,11 +32,6 @@ builds:
   hash_type: sha256
   name: kubernetes-dashboard
   path: kubernetes-dashboard
-- build_datetime_utc: '2023-03-28T10:49:20.149182'
-  hash: 7a3d3fa38877a68ed3ef1142560b1ef7fb0cb67fd7f5069958df630316a2ee59
-  hash_type: sha256
-  name: nextcloud
-  path: nextcloud
 - build_datetime_utc: '2023-03-28T10:14:50.014049'
   hash: 5fbdef6faba818a31e18f4ebb2b8d9bfc25f45f250f61f569401a602cf94379b
   hash_type: sha256

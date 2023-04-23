@@ -4,3 +4,4 @@ kind: Kustomization
 namespace: monitoring
 resources:
   - ../../generated/prometheus
+  - ./httproute.yaml

@@ -349,7 +349,7 @@ metadata:
     app.kubernetes.io/instance: nextcloud
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: nextcloud
-    helm.sh/chart: nextcloud-3.5.10
+    helm.sh/chart: nextcloud-3.5.15
   name: nextcloud-config
 ---
 apiVersion: v1
@@ -368,7 +368,7 @@ metadata:
     app.kubernetes.io/instance: nextcloud
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: nextcloud
-    helm.sh/chart: nextcloud-3.5.10
+    helm.sh/chart: nextcloud-3.5.15
   name: nextcloud-phpconfig
 ---
 apiVersion: v1
@@ -473,14 +473,14 @@ metadata:
     app.kubernetes.io/instance: nextcloud
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: nextcloud
-    helm.sh/chart: nextcloud-3.5.10
+    helm.sh/chart: nextcloud-3.5.15
   name: nextcloud
 spec:
   ports:
   - name: http
     port: 8080
     protocol: TCP
-    targetPort: http
+    targetPort: 80
   selector:
     app.kubernetes.io/component: app
     app.kubernetes.io/instance: nextcloud
@@ -495,7 +495,7 @@ metadata:
     app.kubernetes.io/instance: nextcloud
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: nextcloud
-    helm.sh/chart: nextcloud-3.5.10
+    helm.sh/chart: nextcloud-3.5.15
   name: nextcloud
 spec:
   replicas: 1
@@ -548,7 +548,7 @@ spec:
           value: office.shamrock.systems
         - name: NEXTCLOUD_DATA_DIR
           value: /var/www/html/data
-        image: nextcloud:26.0.1-apache
+        image: nextcloud:27.0.0-apache
         imagePullPolicy: IfNotPresent
         name: nextcloud
         ports:
@@ -650,7 +650,7 @@ spec:
           value: office.shamrock.systems
         - name: NEXTCLOUD_DATA_DIR
           value: /var/www/html/data
-        image: nextcloud:26.0.1-apache
+        image: nextcloud:27.0.0-apache
         imagePullPolicy: IfNotPresent
         name: nextcloud-cron
         resources:

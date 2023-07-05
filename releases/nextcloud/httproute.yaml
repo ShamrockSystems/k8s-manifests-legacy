@@ -4,14 +4,53 @@ metadata:
   name: http
 spec:
   parentRefs:
-  - name: gateway
-    namespace: istio-ingress
-  hostnames: ["office.shamrock.systems"]
+    - name: gateway
+      namespace: istio-ingress
+  hostnames: [ "office.shamrock.systems" ]
   rules:
-  - matches:
-    - path:
-        type: PathPrefix
-        value: /
-    backendRefs:
-    - name: nextcloud
-      port: 8080
+    - matches:
+        - { "path": { "type": "PathPrefix", "value": "/.well-known/webfinger" } }
+      filters:
+        - { "type": "URLRewrite", "urlRewrite": { "path": { "type": "ReplaceFullPath", "replaceFullPath": "/index.php/.well-known/webfinger" } } }
+      backendRefs:
+        - { "name": "nextcloud", "port": 8080 }
+
+    - matches:
+        - { "path": { "type": "PathPrefix", "value": "/.well-known/nodeinfo" } }
+      filters:
+        - { "type": "URLRewrite", "urlRewrite": { "path": { "type": "ReplaceFullPath", "replaceFullPath": "/index.php/.well-known/nodeinfo" } } }
+      backendRefs:
+        - { "name": "nextcloud", "port": 8080 }
+
+    - matches:
+        - { "path": { "type": "PathPrefix", "value": "/.well-known/host-meta" } }
+      filters:
+        - { "type": "URLRewrite", "urlRewrite": { "path": { "type": "ReplaceFullPath", "replaceFullPath": "/public.php?service=host-meta" } } }
+      backendRefs:
+        - { "name": "nextcloud", "port": 8080 }
+
+    - matches:
+        - { "path": { "type": "PathPrefix", "value": "/.well-known/host-meta.json" } }
+      filters:
+        - { "type": "URLRewrite", "urlRewrite": { "path": { "type": "ReplaceFullPath", "replaceFullPath": "/public.php?service=host-meta-json" } } }
+      backendRefs:
+        - { "name": "nextcloud", "port": 8080 }
+
+    - matches:
+        - { "path": { "type": "PathPrefix", "value": "/.well-known/carddav" } }
+      filters:
+        - { "type": "RequestRedirect", "requestRedirect": { "path": { "type": "ReplaceFullPath", "replaceFullPath": "/remote.php/dav" }, "statusCode": 301 } }
+      backendRefs:
+        - { "name": "nextcloud", "port": 8080 }
+
+    - matches:
+        - { "path": { "type": "PathPrefix", "value": "/.well-known/caldav" } }
+      filters:
+        - { "type": "RequestRedirect", "requestRedirect": { "path": { "type": "ReplaceFullPath", "replaceFullPath": "/remote.php/dav" }, "statusCode": 301 } }
+      backendRefs:
+        - { "name": "nextcloud", "port": 8080 }
+
+    - matches:
+        - { "path": { "type": "PathPrefix", "value": "/" } }
+      backendRefs:
+        - { "name": "nextcloud", "port": 8080 }

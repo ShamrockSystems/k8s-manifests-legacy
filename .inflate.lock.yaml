@@ -2,8 +2,8 @@ _build_dir: generated
 _sources_dir: external
 _version: v0.2.0
 builds:
-- build_datetime_utc: '2023-07-02T09:02:52.589135'
-  hash: e941917f472e48f2890be2f463f77f287e9f606a1d6805fc76f313104a36c98e
+- build_datetime_utc: '2023-07-05T01:43:06.050038'
+  hash: 61678d2d45745656c5dfb16b9df79a3e4a2a2dfa17bcba6ce00ec55c63e142da
   hash_type: sha256
   name: nextcloud
   path: nextcloud

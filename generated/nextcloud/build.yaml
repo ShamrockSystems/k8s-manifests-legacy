@@ -283,6 +283,13 @@ data:
     if ($autoconfig_enabled) {
         $AUTOCONFIG["directory"] = getenv('NEXTCLOUD_DATA_DIR') ?: "/var/www/html/data";
     }
+  locale.php: |-
+    <?php
+    $CONFIG = array (
+      'default_language' => 'en',
+      'default_locale' => 'en_US',
+      'default_phone_region' => 'US',
+    );
   redis.config.php: |-
     <?php
     if (getenv('REDIS_HOST')) {
@@ -509,7 +516,7 @@ spec:
   template:
     metadata:
       annotations:
-        nextcloud-config-hash: 9c792513d8b2f4184dbd8fd21b6834da78bc203266eb791a3f38efaad853b7bc
+        nextcloud-config-hash: 455db6dfc8fb28cb7a0dadf1c81d556203cf6762bc04fede2ea5422f2d8270ff
         php-config-hash: ed6e7a748d32ae48057eb6fb256f7a8e76756f106fde2ca6ed689b1202937c8e
       labels:
         app.kubernetes.io/component: app
@@ -584,6 +591,9 @@ spec:
         - mountPath: /var/www/html/themes
           name: nextcloud-main
           subPath: themes
+        - mountPath: /var/www/html/config/locale.php
+          name: nextcloud-config
+          subPath: locale.php
         - mountPath: /var/www/html/config/reverse-proxy.config.php
           name: nextcloud-config
           subPath: reverse-proxy.config.php
@@ -682,6 +692,9 @@ spec:
         - mountPath: /var/www/html/themes
           name: nextcloud-main
           subPath: themes
+        - mountPath: /var/www/html/config/locale.php
+          name: nextcloud-config
+          subPath: locale.php
         - mountPath: /var/www/html/config/reverse-proxy.config.php
           name: nextcloud-config
           subPath: reverse-proxy.config.php

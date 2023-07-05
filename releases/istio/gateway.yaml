@@ -6,15 +6,15 @@ metadata:
 spec:
   gatewayClassName: istio
   listeners:
-  - name: shamrock
-    port: 443
-    protocol: HTTPS
-    allowedRoutes:
-      namespaces:
-        from: All
-    tls:
-      mode: Terminate
-      certificateRefs:
-        - kind: Secret
-          group: ""
-          name: gateway-default-tls
+    - name: shamrock
+      port: 443
+      protocol: HTTPS
+      allowedRoutes:
+        namespaces:
+          from: All
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            group: ""
+            name: gateway-default-tls

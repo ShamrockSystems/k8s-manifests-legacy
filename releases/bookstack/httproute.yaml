@@ -4,14 +4,14 @@ metadata:
   name: http
 spec:
   parentRefs:
-  - name: gateway
-    namespace: istio-ingress
-  hostnames: ["shamrock.systems"]
+    - name: gateway
+      namespace: istio-ingress
+  hostnames: [ "shamrock.systems" ]
   rules:
-  - matches:
-    - path:
-        type: PathPrefix
-        value: /
-    backendRefs:
-    - name: bookstack
-      port: 80
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: bookstack
+          port: 80

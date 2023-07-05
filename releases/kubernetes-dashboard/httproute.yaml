@@ -5,14 +5,14 @@ metadata:
   namespace: kubernetes-dashboard
 spec:
   parentRefs:
-  - name: gateway
-    namespace: istio-ingress
-  hostnames: ["k8s.shamrock.systems"]
+    - name: gateway
+      namespace: istio-ingress
+  hostnames: [ "k8s.shamrock.systems" ]
   rules:
-  - matches:
-    - path:
-        type: PathPrefix
-        value: /
-    backendRefs:
-    - name: oauth2-proxy
-      port: 80
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: oauth2-proxy
+          port: 80

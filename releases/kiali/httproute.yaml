@@ -4,14 +4,14 @@ metadata:
   name: http-kiali
 spec:
   parentRefs:
-  - name: gateway
-    namespace: istio-ingress
-  hostnames: ["kiali.shamrock.systems"]
+    - name: gateway
+      namespace: istio-ingress
+  hostnames: [ "kiali.shamrock.systems" ]
   rules:
-  - matches:
-    - path:
-        type: PathPrefix
-        value: /
-    backendRefs:
-    - name: oauth2-proxy
-      port: 80
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: oauth2-proxy
+          port: 80

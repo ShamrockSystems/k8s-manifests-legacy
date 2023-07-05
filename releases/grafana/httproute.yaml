@@ -4,14 +4,14 @@ metadata:
   name: http
 spec:
   parentRefs:
-  - name: gateway
-    namespace: istio-ingress
-  hostnames: ["grafana.shamrock.systems"]
+    - name: gateway
+      namespace: istio-ingress
+  hostnames: [ "grafana.shamrock.systems" ]
   rules:
-  - matches:
-    - path:
-        type: PathPrefix
-        value: /
-    backendRefs:
-    - name: grafana
-      port: 80
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: grafana
+          port: 80

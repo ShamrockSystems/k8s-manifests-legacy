@@ -2,6 +2,21 @@ _build_dir: generated
 _sources_dir: external
 _version: v0.2.0
 builds:
+- build_datetime_utc: '2023-07-05T02:29:25.231957'
+  hash: 54fb9f3a55e6ea108e2beb390315d7b2ce456c84c70a4678cc496d2bac6c4ac8
+  hash_type: sha256
+  name: kiali
+  path: kiali
+- build_datetime_utc: '2023-07-05T02:29:25.231957'
+  hash: 013a321ab0f85f1294327b5fa59976e3f00707f66b7d4b7e805d2f589e14df15
+  hash_type: sha256
+  name: argo-cd
+  path: argo-cd
+- build_datetime_utc: '2023-07-05T02:29:25.231957'
+  hash: 6bdfae701ab0a4d9248290ac5874f9a71f08131bb51842b220381aba8a1da949
+  hash_type: sha256
+  name: sealed-secrets
+  path: sealed-secrets
 - build_datetime_utc: '2023-07-05T01:43:06.050038'
   hash: 61678d2d45745656c5dfb16b9df79a3e4a2a2dfa17bcba6ce00ec55c63e142da
   hash_type: sha256
@@ -22,21 +37,11 @@ builds:
   hash_type: sha256
   name: prometheus
   path: prometheus
-- build_datetime_utc: '2023-03-28T17:44:23.458592'
-  hash: 12201f064c1b70f8339d3f6b6e88c608cc99bbb5c49415ff9f5e8c6d86c9c02b
-  hash_type: sha256
-  name: kiali
-  path: kiali
 - build_datetime_utc: '2023-03-28T11:55:01.324559'
   hash: 6b8e9c5914bd142620dbed37ff0035bb71a9f3dfe40b808bbdc4adced76e796f
   hash_type: sha256
   name: kubernetes-dashboard
   path: kubernetes-dashboard
-- build_datetime_utc: '2023-03-28T10:14:50.014049'
-  hash: 5fbdef6faba818a31e18f4ebb2b8d9bfc25f45f250f61f569401a602cf94379b
-  hash_type: sha256
-  name: argo-cd
-  path: argo-cd
 - build_datetime_utc: '2023-03-18T01:19:19.572775'
   hash: 3350dc1fa6965782299dd524d2b0531cd021aee8110e837b3e55f1d79b8d590b
   hash_type: sha256
@@ -72,11 +77,6 @@ builds:
   hash_type: sha256
   name: ceph-csi-rbd
   path: ceph-csi-rbd
-- build_datetime_utc: '2023-01-13T20:52:32.412509'
-  hash: 2648964aa588ec43f958d2d23ae20ecfcff329b1eb8bf5d21695805f3045f137
-  hash_type: sha256
-  name: sealed-secrets
-  path: sealed-secrets
 - build_datetime_utc: '2023-01-13T20:52:32.412509'
   hash: b50cac5ef14a31371ccdb886bc9fc5c088713ee6c20f75f26debcc21f0a00f32
   hash_type: sha256

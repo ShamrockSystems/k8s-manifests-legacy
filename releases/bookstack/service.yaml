@@ -7,7 +7,7 @@ spec:
   selector:
     app: bookstack
   ports:
-  - port: 80
-    targetPort: 80
-    name: http-bookstack
-    appProtocol: http
+    - port: 80
+      targetPort: 80
+      name: http-bookstack
+      appProtocol: http

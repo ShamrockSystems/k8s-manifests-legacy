@@ -3,8 +3,8 @@ kind: Kustomization
 
 namespace: httpbin
 resources:
- - ./namespace.yaml
- - ./serviceaccount.yaml
- - ./service.yaml
- - ./deployment.yaml
- - ./httproute.yaml
+  - ./namespace.yaml
+  - ./serviceaccount.yaml
+  - ./service.yaml
+  - ./deployment.yaml
+  - ./httproute.yaml

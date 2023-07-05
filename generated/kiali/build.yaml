@@ -409,7 +409,7 @@ data:
         ignore:
         - KIA1201
     login_token:
-      signing_key: Ipgfn1vbzwPfhzQS
+      signing_key: 9GzvjFZcsZwMjUl9
     server:
       metrics_enabled: true
       metrics_port: 9090
@@ -696,7 +696,6 @@ metadata:
   name: oauth2-proxy-redis-master
   namespace: kiali
 spec:
-  internalTrafficPolicy: Cluster
   ports:
   - name: tcp-redis
     nodePort: null
@@ -737,7 +736,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: f9bfd4d7b6bfcc186fa4f11c909d07fb10616c50cf4c02831a80583295d213bc
+        checksum/config: 3c44502c1808590c9b9b7dc098887c8ab675a7e80441158076f3b8b7ae75deb1
         kiali.io/dashboards: go,kiali
         prometheus.io/port: "9090"
         prometheus.io/scrape: "true"

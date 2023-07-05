@@ -4,17 +4,17 @@ metadata:
   name: http-prometheus
 spec:
   parentRefs:
-  - name: gateway
-    namespace: istio-ingress
-  hostnames: ["prometheus.shamrock.systems"]
+    - name: gateway
+      namespace: istio-ingress
+  hostnames: [ "prometheus.shamrock.systems" ]
   rules:
-  - matches:
-    - path:
-        type: PathPrefix
-        value: /
-    backendRefs:
-    - name: kube-prometheus-stack-prometheus
-      port: 9090
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: kube-prometheus-stack-prometheus
+          port: 9090
 ---
 apiVersion: gateway.networking.k8s.io/v1beta1
 kind: HTTPRoute
@@ -22,14 +22,14 @@ metadata:
   name: http-alertmanager
 spec:
   parentRefs:
-  - name: gateway
-    namespace: istio-ingress
-  hostnames: ["alertmanager.shamrock.systems"]
+    - name: gateway
+      namespace: istio-ingress
+  hostnames: [ "alertmanager.shamrock.systems" ]
   rules:
-  - matches:
-    - path:
-        type: PathPrefix
-        value: /
-    backendRefs:
-    - name: kube-prometheus-stack-alertmanager
-      port: 9093
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: kube-prometheus-stack-alertmanager
+          port: 9093

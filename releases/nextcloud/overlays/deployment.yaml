@@ -6,21 +6,21 @@ spec:
   template:
     spec:
       containers:
-      - name: nextcloud
-        env:
-        - name: REDIS_HOST
-          value: 'nextcloud-redis-master.nextcloud.svc.cluster.local'
-        - name: REDIS_HOST_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              key: redis-password
-              name: nextcloud-redis-secret
-      - name: nextcloud-cron
-        env:
-        - name: REDIS_HOST
-          value: 'nextcloud-redis-master.nextcloud.svc.cluster.local'
-        - name: REDIS_HOST_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              key: redis-password
-              name: nextcloud-redis-secret
+        - name: nextcloud
+          env:
+            - name: REDIS_HOST
+              value: 'nextcloud-redis-master.nextcloud.svc.cluster.local'
+            - name: REDIS_HOST_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: redis-password
+                  name: nextcloud-redis-secret
+        - name: nextcloud-cron
+          env:
+            - name: REDIS_HOST
+              value: 'nextcloud-redis-master.nextcloud.svc.cluster.local'
+            - name: REDIS_HOST_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: redis-password
+                  name: nextcloud-redis-secret

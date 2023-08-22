@@ -13,13 +13,13 @@ releases are Kustomizations.
 
 1. Install [Python](https://www.python.org/) (Version specified in `pyproject.toml`)
 2. Install [Poetry](https://python-poetry.org/)
-3. `poetry init`
+3. `poetry install`
 4. `poetry run task pre-commit-hook`
 
 ## Structure
 
-- `bases/` Kustomize base manifests
-- `bases.external/` Kustomize external manifests, automatically built by `inflate` to `bases/`
+- `external/` Kustomize external manifests, automatically built by `inflate` to `generated/`
+- `generated/` Kustomize builds from external sources
 - `releases/` Release Kustomizations
 
 ## Tooling
@@ -30,7 +30,7 @@ This repository prohibits the committing of `Secret` manifests. Please use [Seal
 kubeseal -f secret.bookstack.yaml -w sealedsecret.yaml
 ```
 
-Helm charts are configured using Kustomizations in `base/`, to retrieve values for a given chart, use:
+Helm charts are configured using Kustomizations in `external/`, to retrieve values for a given chart, use:
 
 ```sh
 helm show values repo/chart > .\values.yaml
@@ -40,8 +40,8 @@ Use `poetry shell` to enable the Python virtual environment.
 
 Use `poetry run task pre-commit` to run `pre-commit` at any time, or just wait to `git commit`.
 
-Use `poetry run task inflate` to inflate Kustomizations from the `bases.external/` directory to the `bases/` directory.
-This allows bases that reference external assets to be properly versioned in the repository without dependence on the
-liveness of those sources.
+Use `poetry run task inflate` to inflate Kustomizations from the `external/` directory to the `generated/` directory.
+This allows releases that reference external assets to be properly versioned in the repository without dependence on the
+liveness or consistency of those sources.
 
-*`inflate` is currently broken across machines for some reason*
+*`inflate` hashes are currently being calculated on machines with UNIX line endings. Inflates generated on Windows will be different if checking out as `CRLF`. Consider checking out this repository as `LF`.

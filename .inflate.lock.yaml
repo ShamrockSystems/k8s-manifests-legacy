@@ -2,6 +2,11 @@ _build_dir: generated
 _sources_dir: external
 _version: v0.2.0
 builds:
+- build_datetime_utc: '2023-08-23T00:28:17.104581'
+  hash: 2f157d98d7b36d1723148696182efde194880230b36536ac05ed07eb5e3937b8
+  hash_type: sha256
+  name: nextcloud
+  path: nextcloud
 - build_datetime_utc: '2023-07-05T02:29:25.231957'
   hash: 54fb9f3a55e6ea108e2beb390315d7b2ce456c84c70a4678cc496d2bac6c4ac8
   hash_type: sha256
@@ -17,11 +22,6 @@ builds:
   hash_type: sha256
   name: sealed-secrets
   path: sealed-secrets
-- build_datetime_utc: '2023-07-05T01:43:06.050038'
-  hash: 61678d2d45745656c5dfb16b9df79a3e4a2a2dfa17bcba6ce00ec55c63e142da
-  hash_type: sha256
-  name: nextcloud
-  path: nextcloud
 - build_datetime_utc: '2023-04-02T06:56:42.565703'
   hash: d4b6bd44cceba09872035bcef6c827f90e934f4b48876204e4973ad980298ada
   hash_type: sha256

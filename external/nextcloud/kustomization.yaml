@@ -9,7 +9,7 @@ helmCharts:
     namespace: nextcloud
     name: nextcloud
     repo: https://nextcloud.github.io/helm/
-    version: 3.5.15
+    version: 4.0.0
     valuesFile: values.nextcloud.yaml
   - releaseName: nextcloud-postgres
     namespace: nextcloud

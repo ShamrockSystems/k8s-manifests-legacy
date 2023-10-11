@@ -2,6 +2,11 @@ _build_dir: generated
 _sources_dir: external
 _version: v0.2.0
 builds:
+- build_datetime_utc: '2023-10-11T19:12:49.802881'
+  hash: ca5f08b1dc0203c67e355fa20f266042366eb64a41896c46a637760debd357ea
+  hash_type: sha256
+  name: argo-cd
+  path: argo-cd
 - build_datetime_utc: '2023-10-11T19:03:20.302602'
   hash: ccafcc4d8ce53c9b72e1e7c63bf55780d0c7788d2392680dbfb7cf0dd432d161
   hash_type: sha256
@@ -17,11 +22,6 @@ builds:
   hash_type: sha256
   name: kiali
   path: kiali
-- build_datetime_utc: '2023-07-05T02:29:25.231957'
-  hash: 013a321ab0f85f1294327b5fa59976e3f00707f66b7d4b7e805d2f589e14df15
-  hash_type: sha256
-  name: argo-cd
-  path: argo-cd
 - build_datetime_utc: '2023-07-05T02:29:25.231957'
   hash: 6bdfae701ab0a4d9248290ac5874f9a71f08131bb51842b220381aba8a1da949
   hash_type: sha256

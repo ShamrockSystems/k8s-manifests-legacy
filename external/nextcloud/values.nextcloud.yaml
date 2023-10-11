@@ -3,7 +3,7 @@
 ##
 image:
   repository: nextcloud
-  tag: 27.0.2-apache
+  tag: 27.1.1-apache
   pullPolicy: IfNotPresent
   # pullSecrets:
   #   - myRegistrKeySecretName
@@ -83,9 +83,10 @@ nextcloud:
     # tokenKey: nextcloud-token
     # smtpUsernameKey: smtp-username
     # smtpPasswordKey: smtp-password
+    # smtpHostKey: smtp-host
   update: 0
   # If web server is not binding default port, you can define it
-  # containerPort: 8080
+  containerPort: 80
   datadir: /var/www/html/data
   persistence:
     subPath:
@@ -260,6 +261,7 @@ nginx:
     repository: nginx
     tag: alpine
     pullPolicy: IfNotPresent
+  containerPort: 80
 
   config:
     # This generates the default nginx config as per the nextcloud documentation
@@ -529,8 +531,10 @@ metrics:
 
   image:
     repository: xperimental/nextcloud-exporter
-    tag: 0.6.0
+    tag: 0.6.1
     pullPolicy: IfNotPresent
+    # pullSecrets:
+    #   - myRegistrKeySecretName
 
   ## Metrics exporter resource requests and limits
   ## ref: http://kubernetes.io/docs/user-guide/compute-resources/

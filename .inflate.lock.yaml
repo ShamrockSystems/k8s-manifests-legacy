@@ -2,6 +2,11 @@ _build_dir: generated
 _sources_dir: external
 _version: v0.2.0
 builds:
+- build_datetime_utc: '2023-10-11T19:03:20.302602'
+  hash: ccafcc4d8ce53c9b72e1e7c63bf55780d0c7788d2392680dbfb7cf0dd432d161
+  hash_type: sha256
+  name: awx
+  path: awx
 - build_datetime_utc: '2023-10-11T18:53:50.796609'
   hash: e76c5becfff5e5e2858c57685c724bbf85e7bb951093bfd9f43bf61bc23c69aa
   hash_type: sha256

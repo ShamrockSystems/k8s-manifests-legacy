@@ -5,3 +5,4 @@ metadata:
   name: awx-metal
 spec:
   service_type: clusterip
+  image_version: 23.0.0

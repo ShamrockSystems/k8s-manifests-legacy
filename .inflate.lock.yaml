@@ -2,6 +2,11 @@ _build_dir: generated
 _sources_dir: external
 _version: v0.2.0
 builds:
+- build_datetime_utc: '2023-11-28T19:10:31.561899'
+  hash: ab3b2b0c3af3c0ff319993cdef920f73e0fe848801b378fea8be0c9de34b9b81
+  hash_type: sha256
+  name: argo-cd
+  path: argo-cd
 - build_datetime_utc: '2023-11-28T14:16:24.833137'
   hash: 5c608b9a78400e722d729ba8046e3e8170bf231cafe6541ee9d936a5bfa2726d
   hash_type: sha256
@@ -17,11 +22,6 @@ builds:
   hash_type: sha256
   name: awx
   path: awx
-- build_datetime_utc: '2023-10-12T01:41:26.108667'
-  hash: 5829eb7c39e0cac1e238e19557a148e282f0571ec9a1bd0164d6b3ed12257e48
-  hash_type: sha256
-  name: argo-cd
-  path: argo-cd
 - build_datetime_utc: '2023-10-11T18:53:50.796609'
   hash: e76c5becfff5e5e2858c57685c724bbf85e7bb951093bfd9f43bf61bc23c69aa
   hash_type: sha256

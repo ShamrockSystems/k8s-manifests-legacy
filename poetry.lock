@@ -38,31 +38,31 @@ files = [
 
 [[package]]
 name = "filelock"
-version = "3.12.4"
+version = "3.13.1"
 description = "A platform independent file lock."
 category = "dev"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "filelock-3.12.4-py3-none-any.whl", hash = "sha256:08c21d87ded6e2b9da6728c3dff51baf1dcecf973b768ef35bcbc3447edb9ad4"},
-    {file = "filelock-3.12.4.tar.gz", hash = "sha256:2e6f249f1f3654291606e046b09f1fd5eac39b360664c27f5aad072012f8bcbd"},
+    {file = "filelock-3.13.1-py3-none-any.whl", hash = "sha256:57dbda9b35157b05fb3e58ee91448612eb674172fab98ee235ccb0b5bee19a1c"},
+    {file = "filelock-3.13.1.tar.gz", hash = "sha256:521f5f56c50f8426f5e03ad3b281b490a87ef15bc6c526f168290f0c7148d44e"},
 ]
 
 [package.extras]
-docs = ["furo (>=2023.7.26)", "sphinx (>=7.1.2)", "sphinx-autodoc-typehints (>=1.24)"]
-testing = ["covdefaults (>=2.3)", "coverage (>=7.3)", "diff-cover (>=7.7)", "pytest (>=7.4)", "pytest-cov (>=4.1)", "pytest-mock (>=3.11.1)", "pytest-timeout (>=2.1)"]
-typing = ["typing-extensions (>=4.7.1)"]
+docs = ["furo (>=2023.9.10)", "sphinx (>=7.2.6)", "sphinx-autodoc-typehints (>=1.24)"]
+testing = ["covdefaults (>=2.3)", "coverage (>=7.3.2)", "diff-cover (>=8)", "pytest (>=7.4.3)", "pytest-cov (>=4.1)", "pytest-mock (>=3.12)", "pytest-timeout (>=2.2)"]
+typing = ["typing-extensions (>=4.8)"]
 
 [[package]]
 name = "identify"
-version = "2.5.30"
+version = "2.5.32"
 description = "File identification library for Python"
 category = "dev"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "identify-2.5.30-py2.py3-none-any.whl", hash = "sha256:afe67f26ae29bab007ec21b03d4114f41316ab9dd15aa8736a167481e108da54"},
-    {file = "identify-2.5.30.tar.gz", hash = "sha256:f302a4256a15c849b91cfcdcec052a8ce914634b2f77ae87dad29cd749f2d88d"},
+    {file = "identify-2.5.32-py2.py3-none-any.whl", hash = "sha256:0b7656ef6cba81664b783352c73f8c24b39cf82f926f78f4550eda928e5e0545"},
+    {file = "identify-2.5.32.tar.gz", hash = "sha256:5d9979348ec1a21c768ae07e0a652924538e8bce67313a73cb0f681cf08ba407"},
 ]
 
 [package.extras]
@@ -70,14 +70,14 @@ license = ["ukkonen"]
 
 [[package]]
 name = "mslex"
-version = "0.3.0"
+version = "1.1.0"
 description = "shlex for windows"
 category = "dev"
 optional = false
 python-versions = ">=3.5"
 files = [
-    {file = "mslex-0.3.0-py2.py3-none-any.whl", hash = "sha256:380cb14abf8fabf40e56df5c8b21a6d533dc5cbdcfe42406bbf08dda8f42e42a"},
-    {file = "mslex-0.3.0.tar.gz", hash = "sha256:4a1ac3f25025cad78ad2fe499dd16d42759f7a3801645399cce5c404415daa97"},
+    {file = "mslex-1.1.0-py2.py3-none-any.whl", hash = "sha256:8826f4bb8d8c63402203d921dc8c2df0c7fec0d9c91d020ddf02fc9d0dce81bd"},
+    {file = "mslex-1.1.0.tar.gz", hash = "sha256:7fe305fbdc9721283875e0b737fdb344374b761338a7f41af91875de278568e4"},
 ]
 
 [[package]]
@@ -97,14 +97,14 @@ setuptools = "*"
 
 [[package]]
 name = "platformdirs"
-version = "3.11.0"
+version = "4.0.0"
 description = "A small Python package for determining appropriate platform-specific dirs, e.g. a \"user data dir\"."
 category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "platformdirs-3.11.0-py3-none-any.whl", hash = "sha256:e9d171d00af68be50e9202731309c4e658fd8bc76f55c11c7dd760d023bda68e"},
-    {file = "platformdirs-3.11.0.tar.gz", hash = "sha256:cf8ee52a3afdb965072dcc652433e0c7e3e40cf5ea1477cd4b3b1d2eb75495b3"},
+    {file = "platformdirs-4.0.0-py3-none-any.whl", hash = "sha256:118c954d7e949b35437270383a3f2531e99dd93cf7ce4dc8340d3356d30f173b"},
+    {file = "platformdirs-4.0.0.tar.gz", hash = "sha256:cb633b2bcf10c51af60beb0ab06d2f1d69064b43abf4c185ca6b28865f3f9731"},
 ]
 
 [package.extras]
@@ -221,36 +221,36 @@ files = [
 
 [[package]]
 name = "setuptools"
-version = "68.2.2"
+version = "69.0.2"
 description = "Easily download, build, install, upgrade, and uninstall Python packages"
 category = "dev"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "setuptools-68.2.2-py3-none-any.whl", hash = "sha256:b454a35605876da60632df1a60f736524eb73cc47bbc9f3f1ef1b644de74fd2a"},
-    {file = "setuptools-68.2.2.tar.gz", hash = "sha256:4ac1475276d2f1c48684874089fefcd83bd7162ddaafb81fac866ba0db282a87"},
+    {file = "setuptools-69.0.2-py3-none-any.whl", hash = "sha256:1e8fdff6797d3865f37397be788a4e3cba233608e9b509382a2777d25ebde7f2"},
+    {file = "setuptools-69.0.2.tar.gz", hash = "sha256:735896e78a4742605974de002ac60562d286fa8051a7e2299445e8e8fbb01aa6"},
 ]
 
 [package.extras]
-docs = ["furo", "jaraco.packaging (>=9.3)", "jaraco.tidelift (>=1.4)", "pygments-github-lexers (==0.0.5)", "rst.linker (>=1.9)", "sphinx (>=3.5)", "sphinx-favicon", "sphinx-hoverxref (<2)", "sphinx-inline-tabs", "sphinx-lint", "sphinx-notfound-page (>=1,<2)", "sphinx-reredirects", "sphinxcontrib-towncrier"]
+docs = ["furo", "jaraco.packaging (>=9.3)", "jaraco.tidelift (>=1.4)", "pygments-github-lexers (==0.0.5)", "rst.linker (>=1.9)", "sphinx (<7.2.5)", "sphinx (>=3.5)", "sphinx-favicon", "sphinx-inline-tabs", "sphinx-lint", "sphinx-notfound-page (>=1,<2)", "sphinx-reredirects", "sphinxcontrib-towncrier"]
 testing = ["build[virtualenv]", "filelock (>=3.4.0)", "flake8-2020", "ini2toml[lite] (>=0.9)", "jaraco.develop (>=7.21)", "jaraco.envs (>=2.2)", "jaraco.path (>=3.2.0)", "pip (>=19.1)", "pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=2.2)", "pytest-mypy (>=0.9.1)", "pytest-perf", "pytest-ruff", "pytest-timeout", "pytest-xdist", "tomli-w (>=1.0.0)", "virtualenv (>=13.0.0)", "wheel"]
 testing-integration = ["build[virtualenv] (>=1.0.3)", "filelock (>=3.4.0)", "jaraco.envs (>=2.2)", "jaraco.path (>=3.2.0)", "packaging (>=23.1)", "pytest", "pytest-enabler", "pytest-xdist", "tomli", "virtualenv (>=13.0.0)", "wheel"]
 
 [[package]]
 name = "taskipy"
-version = "1.12.0"
+version = "1.12.2"
 description = "tasks runner for python projects"
 category = "dev"
 optional = false
 python-versions = ">=3.6,<4.0"
 files = [
-    {file = "taskipy-1.12.0-py3-none-any.whl", hash = "sha256:38306fbc952a7ca314b8f842a74b2fc38535cdab21031fe89e714a83e6259a84"},
-    {file = "taskipy-1.12.0.tar.gz", hash = "sha256:e3dd7c53f7c9c4fd17dc908b1037f545afc452907eb0953b84e91c0a9a9d809d"},
+    {file = "taskipy-1.12.2-py3-none-any.whl", hash = "sha256:ffdbb0bb0db54c0ec5c424610a3a087eea22706d4d1f6e3e8b4f12ebba05f98f"},
+    {file = "taskipy-1.12.2.tar.gz", hash = "sha256:eadfdc20d6bb94d8018eda32f1dbf584cf4aa6cffb71ba5cc2de20d344f8c4fb"},
 ]
 
 [package.dependencies]
 colorama = ">=0.4.4,<0.5.0"
-mslex = {version = ">=0.3.0,<0.4.0", markers = "sys_platform == \"win32\""}
+mslex = {version = ">=1.1.0,<2.0.0", markers = "sys_platform == \"win32\""}
 psutil = ">=5.7.2,<6.0.0"
 tomli = {version = ">=2.0.1,<3.0.0", markers = "python_version >= \"3.7\" and python_version < \"4.0\""}
 
@@ -268,20 +268,20 @@ files = [
 
 [[package]]
 name = "virtualenv"
-version = "20.24.5"
+version = "20.24.7"
 description = "Virtual Python Environment builder"
 category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "virtualenv-20.24.5-py3-none-any.whl", hash = "sha256:b80039f280f4919c77b30f1c23294ae357c4c8701042086e3fc005963e4e537b"},
-    {file = "virtualenv-20.24.5.tar.gz", hash = "sha256:e8361967f6da6fbdf1426483bfe9fca8287c242ac0bc30429905721cefbff752"},
+    {file = "virtualenv-20.24.7-py3-none-any.whl", hash = "sha256:a18b3fd0314ca59a2e9f4b556819ed07183b3e9a3702ecfe213f593d44f7b3fd"},
+    {file = "virtualenv-20.24.7.tar.gz", hash = "sha256:69050ffb42419c91f6c1284a7b24e0475d793447e35929b488bf6a0aade39353"},
 ]
 
 [package.dependencies]
 distlib = ">=0.3.7,<1"
 filelock = ">=3.12.2,<4"
-platformdirs = ">=3.9.1,<4"
+platformdirs = ">=3.9.1,<5"
 
 [package.extras]
 docs = ["furo (>=2023.7.26)", "proselint (>=0.13)", "sphinx (>=7.1.2)", "sphinx-argparse (>=0.4)", "sphinxcontrib-towncrier (>=0.2.1a0)", "towncrier (>=23.6)"]

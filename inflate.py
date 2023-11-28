@@ -143,8 +143,13 @@ def dir_hash(path: Path, h: HASH) -> HASH:
         h.update(p.name.encode())
         if p.is_file():
             with open(p, 'rb') as f:
-                for chunk in iter(lambda: f.read(4096), b''):
-                    h.update(chunk)
+                content = f.read()
+                try:
+                    decoded_content = content.decode('utf-8')
+                    normalized_content = decoded_content.replace('\r\n', '\n').replace('\r', '\n')
+                    h.update(normalized_content.encode())
+                except UnicodeDecodeError:
+                    h.update(content)
         elif p.is_dir():
             h = dir_hash(p, h)
     return h

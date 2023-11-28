@@ -260,7 +260,7 @@ metadata:
 ---
 apiVersion: v1
 data:
-  config.json: '[{"clusterID":"2b7df9eb-01ed-44ed-bc6a-012fa6e68784","monitors":["10.83.67.10:6789","10.83.67.11:6789","10.83.67.12:6789"]}]'
+  config.json: '[{"clusterID":"2b7df9eb-01ed-44ed-bc6a-012fa6e68784","monitors":["10.83.67.11:6789","10.83.67.12:6789"]}]'
 kind: ConfigMap
 metadata:
   labels:

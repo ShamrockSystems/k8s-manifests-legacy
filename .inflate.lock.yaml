@@ -2,6 +2,16 @@ _build_dir: generated
 _sources_dir: external
 _version: v0.2.0
 builds:
+- build_datetime_utc: '2023-11-28T14:16:24.833137'
+  hash: 5c608b9a78400e722d729ba8046e3e8170bf231cafe6541ee9d936a5bfa2726d
+  hash_type: sha256
+  name: ceph-csi-cephfs
+  path: ceph-csi-cephfs
+- build_datetime_utc: '2023-11-28T14:16:24.833137'
+  hash: 865d50c89989493dd08e6a808fb488b171430d426bb64d55724535240f1bd238
+  hash_type: sha256
+  name: ceph-csi-rbd
+  path: ceph-csi-rbd
 - build_datetime_utc: '2023-10-19T02:38:25.513820'
   hash: ccafcc4d8ce53c9b72e1e7c63bf55780d0c7788d2392680dbfb7cf0dd432d161
   hash_type: sha256
@@ -72,16 +82,6 @@ builds:
   hash_type: sha256
   name: onlyoffice
   path: onlyoffice
-- build_datetime_utc: '2023-01-30T01:16:13.819632'
-  hash: e9c65b252da724a4c551680408f331834baad819a60906279df44ac78d6d3112
-  hash_type: sha256
-  name: ceph-csi-cephfs
-  path: ceph-csi-cephfs
-- build_datetime_utc: '2023-01-30T01:06:33.438098'
-  hash: 561e8af879e9c032f69f89a18babd26384e4dbf1271015080940938ee121eb00
-  hash_type: sha256
-  name: ceph-csi-rbd
-  path: ceph-csi-rbd
 - build_datetime_utc: '2023-01-13T20:52:32.412509'
   hash: b50cac5ef14a31371ccdb886bc9fc5c088713ee6c20f75f26debcc21f0a00f32
   hash_type: sha256

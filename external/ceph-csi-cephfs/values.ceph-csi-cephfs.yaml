@@ -122,7 +122,7 @@ nodeplugin:
 
 provisioner:
   name: provisioner
-  replicaCount: 3
+  replicaCount: 2
   strategy:
     # RollingUpdate strategy replaces old pods with new ones gradually,
     # without incurring downtime.

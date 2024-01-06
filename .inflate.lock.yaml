@@ -2,6 +2,11 @@ _build_dir: generated
 _sources_dir: external
 _version: v0.2.0
 builds:
+- build_datetime_utc: '2024-01-06T03:42:52.174372'
+  hash: 33e656c810f2f9c7b3bd9e18d903d7bda81b040eb905f0d3334ff259898f1cd0
+  hash_type: sha256
+  name: nextcloud
+  path: nextcloud
 - build_datetime_utc: '2023-11-28T19:56:05.817420'
   hash: c624bcd7ce6dd85a91392f01e1e5148f7ac71e352798cfd4c27f75ebf758de18
   hash_type: sha256
@@ -22,11 +27,6 @@ builds:
   hash_type: sha256
   name: awx
   path: awx
-- build_datetime_utc: '2023-10-11T18:53:50.796609'
-  hash: e76c5becfff5e5e2858c57685c724bbf85e7bb951093bfd9f43bf61bc23c69aa
-  hash_type: sha256
-  name: nextcloud
-  path: nextcloud
 - build_datetime_utc: '2023-07-05T02:29:25.231957'
   hash: 54fb9f3a55e6ea108e2beb390315d7b2ce456c84c70a4678cc496d2bac6c4ac8
   hash_type: sha256

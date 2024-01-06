@@ -555,7 +555,7 @@ spec:
           value: office.shamrock.systems
         - name: NEXTCLOUD_DATA_DIR
           value: /var/www/html/data
-        image: nextcloud:27.1.1-apache
+        image: nextcloud:27.1.5-apache
         imagePullPolicy: IfNotPresent
         name: nextcloud
         ports:
@@ -660,7 +660,7 @@ spec:
           value: office.shamrock.systems
         - name: NEXTCLOUD_DATA_DIR
           value: /var/www/html/data
-        image: nextcloud:27.1.1-apache
+        image: nextcloud:27.1.5-apache
         imagePullPolicy: IfNotPresent
         name: nextcloud-cron
         resources:

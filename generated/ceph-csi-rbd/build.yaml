@@ -455,7 +455,7 @@ metadata:
   name: ceph-csi-rbd-provisioner
   namespace: ceph-csi-rbd
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: ceph-csi-rbd
@@ -474,20 +474,6 @@ spec:
         heritage: Helm
         release: ceph-csi-rbd
     spec:
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchExpressions:
-              - key: app
-                operator: In
-                values:
-                - ceph-csi-rbd
-              - key: component
-                operator: In
-                values:
-                - provisioner
-            topologyKey: kubernetes.io/hostname
       containers:
       - args:
         - --csi-address=$(ADDRESS)

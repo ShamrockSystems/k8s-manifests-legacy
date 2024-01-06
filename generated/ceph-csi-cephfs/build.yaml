@@ -328,7 +328,7 @@ metadata:
   name: ceph-csi-cephfs-provisioner
   namespace: ceph-csi-cephfs
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: ceph-csi-cephfs
@@ -347,20 +347,6 @@ spec:
         heritage: Helm
         release: ceph-csi-cephfs
     spec:
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchExpressions:
-              - key: app
-                operator: In
-                values:
-                - ceph-csi-cephfs
-              - key: component
-                operator: In
-                values:
-                - provisioner
-            topologyKey: kubernetes.io/hostname
       containers:
       - args:
         - --csi-address=$(ADDRESS)

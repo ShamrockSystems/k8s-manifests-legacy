@@ -2,6 +2,11 @@ _build_dir: generated
 _sources_dir: external
 _version: v0.2.0
 builds:
+- build_datetime_utc: '2024-01-06T04:33:36.711076'
+  hash: 4075a02d489a09a792d3df7fe90c63e92aff93a79725affab5c25d8fdd97c768
+  hash_type: sha256
+  name: nextcloud
+  path: nextcloud
 - build_datetime_utc: '2024-01-06T03:49:02.300173'
   hash: 616995a676d360f74e850effde8de82a6bbcf6c1361d8c8242c3c6ca985b3424
   hash_type: sha256
@@ -12,11 +17,6 @@ builds:
   hash_type: sha256
   name: ceph-csi-rbd
   path: ceph-csi-rbd
-- build_datetime_utc: '2024-01-06T03:42:52.174372'
-  hash: 33e656c810f2f9c7b3bd9e18d903d7bda81b040eb905f0d3334ff259898f1cd0
-  hash_type: sha256
-  name: nextcloud
-  path: nextcloud
 - build_datetime_utc: '2023-11-28T19:10:31.561899'
   hash: ab3b2b0c3af3c0ff319993cdef920f73e0fe848801b378fea8be0c9de34b9b81
   hash_type: sha256

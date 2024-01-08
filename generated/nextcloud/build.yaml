@@ -356,7 +356,7 @@ metadata:
     app.kubernetes.io/instance: nextcloud
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: nextcloud
-    helm.sh/chart: nextcloud-3.5.4
+    helm.sh/chart: nextcloud-4.5.10
   name: nextcloud-config
 ---
 apiVersion: v1
@@ -375,7 +375,7 @@ metadata:
     app.kubernetes.io/instance: nextcloud
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: nextcloud
-    helm.sh/chart: nextcloud-3.5.4
+    helm.sh/chart: nextcloud-4.5.10
   name: nextcloud-phpconfig
 ---
 apiVersion: v1
@@ -460,6 +460,7 @@ metadata:
   name: nextcloud-redis-master
   namespace: nextcloud
 spec:
+  internalTrafficPolicy: Cluster
   ports:
   - name: tcp-redis
     nodePort: null
@@ -480,14 +481,14 @@ metadata:
     app.kubernetes.io/instance: nextcloud
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: nextcloud
-    helm.sh/chart: nextcloud-3.5.4
+    helm.sh/chart: nextcloud-4.5.10
   name: nextcloud
 spec:
   ports:
   - name: http
     port: 8080
     protocol: TCP
-    targetPort: http
+    targetPort: 80
   selector:
     app.kubernetes.io/component: app
     app.kubernetes.io/instance: nextcloud
@@ -502,7 +503,7 @@ metadata:
     app.kubernetes.io/instance: nextcloud
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: nextcloud
-    helm.sh/chart: nextcloud-3.5.4
+    helm.sh/chart: nextcloud-4.5.10
   name: nextcloud
 spec:
   replicas: 1
@@ -562,13 +563,7 @@ spec:
         - containerPort: 80
           name: http
           protocol: TCP
-        resources:
-          limits:
-            cpu: 2000m
-            memory: 4096Mi
-          requests:
-            cpu: 1000m
-            memory: 2048Mi
+        resources: {}
         volumeMounts:
         - mountPath: /var/www/
           name: nextcloud-main
@@ -663,13 +658,7 @@ spec:
         image: nextcloud:28.0.1-apache
         imagePullPolicy: IfNotPresent
         name: nextcloud-cron
-        resources:
-          limits:
-            cpu: 2000m
-            memory: 4096Mi
-          requests:
-            cpu: 1000m
-            memory: 2048Mi
+        resources: {}
         volumeMounts:
         - mountPath: /var/www/
           name: nextcloud-main
